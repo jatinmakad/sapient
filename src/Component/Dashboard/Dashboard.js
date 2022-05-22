@@ -4,7 +4,7 @@ import BasicLayout from '../BasicLayout/BasicLayout'
 const Dashboard = () => {
   return (
     <BasicLayout heading="Dashboard">
-        jatin
+        DashBoard
     </BasicLayout>
   )
 }

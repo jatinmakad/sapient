@@ -3,9 +3,15 @@ import Box from "@mui/material/Box";
 import DrawerLeft from "./DrawerLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import { useDispatch } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
+import ToastComponent from "../Common/TaostComponent";
+import { LogoutFunction } from "../../Slice/AdminSlice";
 const BasicLayout = ({ children, heading }) => {
   const [open, setOpen] = React.useState(true);
   const [ind, setIndex] = React.useState("");
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const handleDrawerClose = () => {
     setOpen(false);
   };
@@ -31,7 +37,7 @@ const BasicLayout = ({ children, heading }) => {
         handleMouseDownPassword={handleMouseDownPassword}
       />
       <div className="flex flex-col w-full h-full">
-        <div className="flex lg:p-4 md:p-2 z-30 p-2 bg-white h-20 w-full fixed border-b text-blue-600 justify-between items-center cursor-pointer">
+        <div className="flex lg:p-4 md:p-2 z-30 p-2 bg-white h-20 w-full border-b text-blue-600 justify-between items-center cursor-pointer">
           <p className="lg:text-2xl md:text-2xl text-xl flex items-center capitalize ">
             {!open ? (
               <ChevronRightIcon
@@ -43,10 +49,13 @@ const BasicLayout = ({ children, heading }) => {
             )}
             {heading}
           </p>
-          {/* <LogoutOutlinedIcon className="text-blue-600 " /> */}
+          <LogoutOutlinedIcon
+            className="text-blue-600 "
+            onClick={() => dispatch(LogoutFunction())}
+          />
         </div>
         <div
-          className="lg:p-5 md:p-5 p-3 mt-20 h-auto w-full"
+          className="lg:p-5 md:p-5 p-3 min-h-screen max-h-full w-full"
           style={{ background: "#E5E5E5" }}
         >
           {" "}

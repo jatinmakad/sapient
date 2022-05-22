@@ -36,18 +36,13 @@ const loginSlice = createSlice({
       state.isLoading = false;
       state.admin = "";
       state.isAuth = false;
-    }
+    },
   },
 });
 
 const { actions } = loginSlice;
-export const {
-  loginPending,
-  loginSuccess,
-  loginFail,
-  logout,
-  logoutPending
-} = actions;
+export const { loginPending, loginSuccess, loginFail, logout, logoutPending } =
+  actions;
 export default loginSlice.reducer;
 
 export const LoginFunction = (Data) => {
@@ -60,7 +55,7 @@ export const LoginFunction = (Data) => {
         Data,
         config
       );
-      localStorage.setItem("auth",  JSON.stringify(data));
+      localStorage.setItem("auth", JSON.stringify(data));
       dispatch(loginSuccess(data));
       if (data.success === true) {
         ToastComponent("Login Successfully", "success");
@@ -73,15 +68,8 @@ export const LoginFunction = (Data) => {
 };
 export const LogoutFunction = () => {
   return async (dispatch) => {
-    try {
-      dispatch(logoutPending());
-      const { data } = await axios.get(`/api/v1/logout`);
-      dispatch(logout());
-      if (data.success === true) {
-        ToastComponent("Logout Successfully", "error");
-      }
-    } catch (error) {
-      ToastComponent(error.response.data.message, "error");
-    }
+    localStorage.removeItem("auth");
+    dispatch(logout());
+    ToastComponent("Logout Successfully", "success");
   };
 };
