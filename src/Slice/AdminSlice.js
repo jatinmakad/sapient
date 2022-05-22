@@ -60,6 +60,7 @@ export const LoginFunction = (Data) => {
         Data,
         config
       );
+      localStorage.setItem("auth",  JSON.stringify(data));
       dispatch(loginSuccess(data));
       if (data.success === true) {
         ToastComponent("Login Successfully", "success");

@@ -46,7 +46,7 @@ const BasicLayout = ({ children, heading }) => {
           {/* <LogoutOutlinedIcon className="text-blue-600 " /> */}
         </div>
         <div
-          className="lg:p-5 md:p-5 p-3 max-h-full mt-20 h-screen w-full"
+          className="lg:p-5 md:p-5 p-3 mt-20 h-auto w-full"
           style={{ background: "#E5E5E5" }}
         >
           {" "}

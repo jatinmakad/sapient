@@ -12,8 +12,8 @@ const CreateUser = () => {
   const formikRef = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAuth} = useSelector((state) => state.Login);
-  const { isSuccess} = useSelector((state) => state.Register.register);
+  const { isAuth } = useSelector((state) => state.Login);
+  const { isSuccess } = useSelector((state) => state.Register.register);
 
   useEffect(() => {
     if (isSuccess) {
@@ -22,7 +22,7 @@ const CreateUser = () => {
     if (isAuth === false) {
       navigate("/login");
     }
-  }, [isAuth,isSuccess]);
+  }, [isAuth, isSuccess]);
   const validationSchema = Yup.object({
     name: Yup.string().required("Required"),
     email: Yup.string().required("Required"),
@@ -52,7 +52,7 @@ const CreateUser = () => {
         {({ errors, handleChange, values, touched, setFieldValue }) => (
           <Form className="bg-white rounded-sm p-4 pt-5 pb-5">
             <Grid lg={12} md={12} sm={12} xs={12} container spacing={2}>
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Name"
                   handleChange={handleChange}
@@ -63,7 +63,7 @@ const CreateUser = () => {
                 />
               </Grid>
 
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Email"
                   type="text"
@@ -73,7 +73,7 @@ const CreateUser = () => {
                   helperText={touched.email ? errors.email : ""}
                 />
               </Grid>
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Contact Number"
                   handleChange={handleChange}
@@ -83,7 +83,7 @@ const CreateUser = () => {
                   helperText={touched.contactNumber ? errors.contactNumber : ""}
                 />
               </Grid>
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Password"
                   handleChange={handleChange}
@@ -93,7 +93,7 @@ const CreateUser = () => {
                   helperText={touched.password ? errors.password : ""}
                 />
               </Grid>
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FormikDropdown
                   heading="Role"
                   handleChange={handleChange}
@@ -105,6 +105,9 @@ const CreateUser = () => {
               </Grid>
               <Grid
                 lg={12}
+                xs={12}
+                sm={12}
+                md={12}
                 marginTop="20px"
                 justifyContent="flex-end"
                 display="flex"

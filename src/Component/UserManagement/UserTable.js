@@ -14,7 +14,7 @@ import Loader from "../Common/Loader";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 export default function UserTable() {
-  const { entry } = useSelector((state) => state.Entry.get);
+  const { data } = useSelector((state) => state.Register.get.users);
   const navigate = useNavigate();
   const { isAuth } = useSelector((state) => state.Login);
   useEffect(() => {
@@ -24,49 +24,52 @@ export default function UserTable() {
   }, [isAuth]);
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            {headerCell.map((r) => {
-              return (
-                <TableCell
-                  align={r.align}
-                  sx={{
-                    color: "gray",
-                    borderBottom: "0.5px solid lightgray",
-                  }}
-                >
-                  {r.value}
-                </TableCell>
-              );
-            })}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {entry.data.map((row, index) => (
-            <TableRow sx={{ border: "none" }}>
-              <StyledTableCell component="th" scope="row">
-                {index + 1}
-              </StyledTableCell>
-              <StyledTableCell align="left">{row.invoiceNo}</StyledTableCell>
-              <StyledTableCell align="left">{row.city}</StyledTableCell>
-              <StyledTableCell align="left">
-                {moment(row.date).format("L")}
-              </StyledTableCell>
-              <StyledTableCell align="left">
-                {/* <StatusColor status={row.status} /> */}
-                {row.insured}
-              </StyledTableCell>
-              <StyledTableCell align="left">
-                <div className="flex justify-evenly items-center">
-                  <EditIcon className="text-blue-700 cursor-pointer" />
-                  <DeleteIcon className="text-red-700 cursor-pointer" />
-                </div>
-              </StyledTableCell>
+      {!data ? (
+        <Loader />
+      ) : (
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              {headerCell.map((r) => {
+                return (
+                  <TableCell
+                    align={r.align}
+                    sx={{
+                      color: "gray",
+                      borderBottom: "0.5px solid lightgray",
+                    }}
+                  >
+                    {r.value}
+                  </TableCell>
+                );
+              })}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {data &&
+              data.map((row, index) => (
+                <TableRow sx={{ border: "none" }}>
+                  <StyledTableCell component="th" scope="row">
+                    {index + 1}
+                  </StyledTableCell>
+                  <StyledTableCell align="left">{row.name}</StyledTableCell>
+                  <StyledTableCell align="left">{row.email}</StyledTableCell>
+                  <StyledTableCell align="left">{row.role}</StyledTableCell>
+                  <StyledTableCell align="left">
+                    {/* <StatusColor status={row.status} /> */}
+                    {row.contactNumber}
+                  </StyledTableCell>
+                  <StyledTableCell align="left">
+                    <div className="flex justify-evenly items-center">
+                      <EditIcon className="text-blue-700 cursor-pointer" />
+                      <DeleteIcon className="text-red-700 cursor-pointer" />
+                    </div>
+                  </StyledTableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      )}
     </TableContainer>
   );
 }
@@ -107,6 +110,10 @@ const headerCell = [
   },
   {
     value: "Role",
+    align: "left",
+  },
+  {
+    value: "Contact Number",
     align: "left",
   },
   {

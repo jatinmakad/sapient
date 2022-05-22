@@ -46,7 +46,6 @@ export default function EntryTable() {
   const deleteAction = (id) => {
     dispatch(DeletEntryFunction(id));
   };
-  console.log(entry);
   return (
     <TableContainer component={Paper}>
       {!entry ? (
@@ -79,7 +78,7 @@ export default function EntryTable() {
                     {index + 1}
                   </StyledTableCell>
                   <StyledTableCell align="left">
-                    {row.invoiceNo}
+                    {row.reportRefrenceNo}
                   </StyledTableCell>
                   <StyledTableCell align="left">{row.city}</StyledTableCell>
                   <StyledTableCell align="left">

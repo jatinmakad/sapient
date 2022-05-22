@@ -15,15 +15,15 @@ const CreateEntry = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isSuccess } = useSelector((state) => state.Entry.create);
-  const {isAuth} = useSelector((state) => state.Login)
+  const { isAuth } = useSelector((state) => state.Login);
   useEffect(() => {
     if (isSuccess) {
       navigate("/entry");
     }
-    if(!isAuth){
-      navigate("/login")
+    if (!isAuth) {
+      navigate("/login");
     }
-  }, [isSuccess,isAuth]);
+  }, [isSuccess, isAuth]);
   const validationSchema = Yup.object({
     reportRefrenceNo: Yup.number().required("Required"),
     finanicalYear: Yup.string().required("Required"),
@@ -85,7 +85,7 @@ const CreateEntry = () => {
         {({ errors, handleChange, values, touched, setFieldValue }) => (
           <Form className="bg-white rounded-sm p-4 pt-5 pb-5">
             <Grid lg={12} md={12} sm={12} xs={12} container spacing={2}>
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Report Refrence No."
                   handleChange={handleChange}
@@ -99,7 +99,7 @@ const CreateEntry = () => {
                   }
                 />
               </Grid>
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <div className="flex flex-col justify-start">
                   <p className="text-sm mb-2">Finanical Year</p>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -125,7 +125,7 @@ const CreateEntry = () => {
                   </LocalizationProvider>
                 </div>
               </Grid>
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Insuer"
                   type="text"
@@ -135,7 +135,7 @@ const CreateEntry = () => {
                   helperText={touched.insuer ? errors.insuer : ""}
                 />
               </Grid>
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Policy No."
                   handleChange={handleChange}
@@ -145,18 +145,17 @@ const CreateEntry = () => {
                   helperText={touched.policyNo ? errors.policyNo : ""}
                 />
               </Grid>
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Broker"
                   handleChange={handleChange}
                   type="text"
-
                   name="broker"
                   error={touched.broker && Boolean(errors.broker)}
                   helperText={touched.broker ? errors.broker : ""}
                 />
               </Grid>
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Consignee"
                   handleChange={handleChange}
@@ -166,7 +165,7 @@ const CreateEntry = () => {
                   helperText={touched.consignee ? errors.consignee : ""}
                 />
               </Grid>
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Invoice No."
                   handleChange={handleChange}
@@ -177,7 +176,7 @@ const CreateEntry = () => {
                 />
               </Grid>
 
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <div className="flex flex-col justify-start">
                   <p className="text-sm mb-2">Month</p>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -189,13 +188,8 @@ const CreateEntry = () => {
                           {...params}
                           fullWidth
                           size="small"
-                          error={
-                            touched.month &&
-                            Boolean(errors.month)
-                          }
-                          helperText={
-                            touched.month ? errors.month : ""
-                          }
+                          error={touched.month && Boolean(errors.month)}
+                          helperText={touched.month ? errors.month : ""}
                         />
                       )}
                     />
@@ -203,7 +197,7 @@ const CreateEntry = () => {
                 </div>
               </Grid>
 
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Intimation"
                   handleChange={handleChange}
@@ -213,7 +207,7 @@ const CreateEntry = () => {
                   helperText={touched.intimation ? errors.intimation : ""}
                 />
               </Grid>
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="City"
                   handleChange={handleChange}
@@ -223,7 +217,7 @@ const CreateEntry = () => {
                   helperText={touched.city ? errors.city : ""}
                 />
               </Grid>
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Insured"
                   handleChange={handleChange}
@@ -234,7 +228,7 @@ const CreateEntry = () => {
                 />
               </Grid>
 
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Broker Location"
                   handleChange={handleChange}
@@ -248,7 +242,7 @@ const CreateEntry = () => {
                   }
                 />
               </Grid>
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Loss City"
                   handleChange={handleChange}
@@ -259,7 +253,7 @@ const CreateEntry = () => {
                 />
               </Grid>
 
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <div className="flex flex-col justify-start">
                   <p className="text-sm mb-2">Date</p>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -271,13 +265,8 @@ const CreateEntry = () => {
                           {...params}
                           fullWidth
                           size="small"
-                          error={
-                            touched.date &&
-                            Boolean(errors.date)
-                          }
-                          helperText={
-                            touched.date ? errors.date : ""
-                          }
+                          error={touched.date && Boolean(errors.date)}
+                          helperText={touched.date ? errors.date : ""}
                         />
                       )}
                     />
@@ -285,7 +274,7 @@ const CreateEntry = () => {
                 </div>
               </Grid>
 
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Age"
                   handleChange={handleChange}
@@ -295,7 +284,7 @@ const CreateEntry = () => {
                   helperText={touched.age ? errors.age : ""}
                 />
               </Grid>
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Claim Type"
                   handleChange={handleChange}
@@ -306,7 +295,7 @@ const CreateEntry = () => {
                 />
               </Grid>
 
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Claim No."
                   handleChange={handleChange}
@@ -317,7 +306,7 @@ const CreateEntry = () => {
                 />
               </Grid>
 
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Insured City"
                   handleChange={handleChange}
@@ -328,7 +317,7 @@ const CreateEntry = () => {
                 />
               </Grid>
 
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Consignor"
                   handleChange={handleChange}
@@ -337,7 +326,7 @@ const CreateEntry = () => {
                   helperText={touched.consignor ? errors.consignor : ""}
                 />
               </Grid>
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="State"
                   handleChange={handleChange}
@@ -348,7 +337,7 @@ const CreateEntry = () => {
                 />
               </Grid>
 
-              <Grid lg={4} item>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Invoice Value"
                   handleChange={handleChange}
@@ -361,6 +350,9 @@ const CreateEntry = () => {
 
               <Grid
                 lg={12}
+                md={12}
+                xs={12}
+                sm={12}
                 marginTop="20px"
                 justifyContent="flex-end"
                 display="flex"

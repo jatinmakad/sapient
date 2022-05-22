@@ -24,15 +24,16 @@ const DrawerLeft = ({
 }) => {
   const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
   const navigate = useNavigate();
-  const {isAuth,admin} = useSelector(state => state.Login)
+  const { isAuth, admin } = useSelector((state) => state.Login);
   useEffect(() => {
-    window.addEventListener("resize", update);
-    if (!isAuth) {
+    if (windowWidth) {
+      window.addEventListener("resize", update);
+    }
+    if (isAuth === false) {
       navigate("/login");
     }
-  }, [isAuth]);
-console.log(admin,"admin")
- 
+  }, [isAuth, windowWidth]);
+
   const update = () => {
     setWindowWidth(window.innerWidth);
     setOpen(false);
@@ -43,7 +44,7 @@ console.log(admin,"admin")
   } else {
     res = false;
   }
-  return (
+  return isAuth ? (
     <Box sx={{ display: "flex" }}>
       <Drawer
         variant="permanent"
@@ -82,12 +83,21 @@ console.log(admin,"admin")
             <div className="flex items-center px-3 mt-4 mb-4">
               <img src={Icon} className="rounded-full w-12 mr-2" />
               <div>
-                <p className="text-md text-black">{admin.user && admin.user.name}</p>
-                <span className="text-sm text-gray-400">Entry Team</span>
+                <p className="text-md text-black">
+                  {admin.user && admin.user.name}
+                </p>
+                <span className="text-sm text-gray-400">
+                  {admin.user && admin.user.role}
+                </span>
               </div>
             </div>
             <List sx={{ alignSelf: "center", width: "100%" }}>
-              {HrData.map((item) => {
+              {(admin.user && admin.user.role === "admin"
+                ? adminData
+                : admin.user.role === "entry team"
+                ? EntryData
+                : ""
+              ).map((item) => {
                 return (
                   <Link to={item.click}>
                     <ListItemButton
@@ -129,12 +139,27 @@ console.log(admin,"admin")
         </div>
       </Drawer>
     </Box>
+  ) : (
+    ""
   );
 };
 
 export default DrawerLeft;
 
-const HrData = [
+const EntryData = [
+  {
+    text: "Dashboard",
+    icon: DashboardOutlinedIcon,
+    click: "/dashboard",
+  },
+  {
+    text: "Entry Team",
+    icon: DashboardOutlinedIcon,
+    click: "/entry",
+  },
+];
+
+const adminData = [
   {
     text: "Dashboard",
     icon: DashboardOutlinedIcon,
@@ -176,49 +201,6 @@ const HrData = [
   //   click: "/login",
   // },
 ];
-
-// const data = [
-//   {
-//     text: "Dashboard",
-//     icon: DashboardIcon,
-//     click: "/dashboard",
-//   },
-//   {
-//     text: "Attendence",
-//     icon: DashboardIcon,
-//     click: "/attendence",
-//   },
-//   {
-//     text: "Absence",
-//     icon: DashboardIcon,
-//     click: "/absence",
-//   },
-//   {
-//     text: "Employee",
-//     icon: PeopleAltIcon,
-//     click: "/employee",
-//   },
-//   {
-//     text: "Tasks",
-//     icon: AssignmentIcon,
-//     click: "/tasks",
-//   },
-//   {
-//     text: "Projects",
-//     icon: DashboardIcon,
-//     click: "/projects",
-//   },
-//   {
-//     text: "Attendence Logs",
-//     icon: DashboardIcon,
-//     click: "/logs",
-//   },
-//   {
-//     text: "Ticket Raise",
-//     icon: DashboardIcon,
-//     click: "/ticket-raise",
-//   },
-// ];
 
 const drawerWidth = 230;
 const openedMixin = (theme) => ({

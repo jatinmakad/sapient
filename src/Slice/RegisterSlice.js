@@ -82,12 +82,11 @@ export const GetUserFunction = () => {
   return async (dispatch) => {
     try {
       dispatch(GetUserPending());
-      const { data } = await axios.get(`/api/v1/logout`);
+      const { data } = await axios.get(`https://sap-user-microservice.herokuapp.com/getUsers`);
       dispatch(GetUserSuccess(data));
     } catch (error) {
       ToastComponent(error.response.data.message, "error");
       dispatch(GetUserFail(error));
-      
     }
   };
 };

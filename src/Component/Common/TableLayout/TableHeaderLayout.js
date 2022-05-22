@@ -14,38 +14,29 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import AccountCircleOutlined from "@mui/icons-material/AccountCircleOutlined";
 
-const TableHeaderLayout = ({ heading, link, setSearchInput }) => {
+const TableHeaderLayout = ({ heading, link, setSearchInput, children }) => {
+  const { isAuth, admin } = useSelector((state) => state.Login);
   return (
     <Grid lg={12} container justifyContent={"space-between"} spacing={2} mb={2}>
       <Grid item lg={3} md={3} xs={6} sm={6}>
         <TextField
-          variant="standard" 
+          variant="standard"
           fullWidth
           placeholder="Search....."
           onChange={(e) => setSearchInput(e.target.value)}
-          sx={{ background: "#fff",padding:"7px 10px",border:"1px solid lightgray",borderRadius:"5px" }}
+          sx={{
+            background: "#fff",
+            padding: "7px 10px",
+            border: "1px solid lightgray",
+            borderRadius: "5px",
+          }}
           size="small"
           InputProps={{
-            disableUnderline: true, 
+            disableUnderline: true,
           }}
         />
       </Grid>
-      <Grid
-        item
-        lg={3}
-        md={3}
-        sm={6}
-        xs={6}
-        display="flex"
-        justifyContent="flex-end"
-      >
-        <Link to={link}>
-          <Button variant="contained" color="primary">
-            {/* <AddIcon /> */}
-            {heading}
-          </Button>
-        </Link>
-      </Grid>
+      {children}
     </Grid>
   );
 };
