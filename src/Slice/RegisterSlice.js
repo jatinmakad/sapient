@@ -62,7 +62,7 @@ export const RegisterFunction = (Data) => {
       dispatch(RegisterPending());
       const config = { headers: { "Content-Type": "application/json" } };
       const { data } = await axios.post(
-        `http://localhost:3000/register`,
+        `https://sap-user-microservice.herokuapp.com/register`,
         Data,
         config
       );
