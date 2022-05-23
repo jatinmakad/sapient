@@ -22,9 +22,9 @@ export default function UserTable({ searchInput }) {
       navigate("/login");
     }
   }, [isAuth]);
-  let updatedArray = data.filter(
+  let updatedArray = data ? data.filter(
     (e) => e.name.toLowerCase().search(searchInput.toLowerCase().trim()) !== -1
-  );
+  ) : ""
   return (
     <TableContainer component={Paper}>
       {!data ? (

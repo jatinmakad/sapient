@@ -160,22 +160,22 @@ const adminData = [
   {
     text: "Report Team",
     icon: DashboardOutlinedIcon,
-    click: "/absence",
+    click: "/dashboard",
   },
   {
     text: "Cordination Team",
     icon: DashboardOutlinedIcon,
-    click: "/employee",
+    click: "/dashboard",
   },
   {
     text: "Checking Team",
     icon: AssignmentIcon,
-    click: "/tasks",
+    click: "/dashboard",
   },
   {
     text: "Account Team",
     icon: AssignmentIcon,
-    click: "/tasks",
+    click: "/dashboard",
   },
   {
     text: "User Management",
