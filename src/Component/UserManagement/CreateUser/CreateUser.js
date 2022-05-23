@@ -25,9 +25,9 @@ const CreateUser = () => {
   }, [isAuth, isSuccess]);
   const validationSchema = Yup.object({
     name: Yup.string().required("Required"),
-    email: Yup.string().required("Required"),
+    email: Yup.string().email("Invalid email format").required("Required"),
     password: Yup.string().required("Required"),
-    contactNumber: Yup.string().required("Required"),
+    contactNumber: Yup.number().min(10).required("Required"),
     role: Yup.string().required("Required"),
   });
   const initialValues = {
@@ -66,7 +66,7 @@ const CreateUser = () => {
               <Grid lg={4} md={6} sm={12} xs={12} item>
                 <FomikTextField
                   heading="Email"
-                  type="text"
+                  type="email"
                   handleChange={handleChange}
                   name="email"
                   error={touched.email && Boolean(errors.email)}
@@ -87,7 +87,7 @@ const CreateUser = () => {
                 <FomikTextField
                   heading="Password"
                   handleChange={handleChange}
-                  type="text"
+                  type="password"
                   name="password"
                   error={touched.password && Boolean(errors.password)}
                   helperText={touched.password ? errors.password : ""}
