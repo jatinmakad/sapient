@@ -16,7 +16,7 @@ import moment from "moment";
 import { Link, useNavigate } from "react-router-dom";
 import DeleteDialog from "../Common/DeleteDialog";
 import { DeletEntryFunction, GetEntryFunction } from "../../Slice/EntrySlice";
-export default function EntryTable() {
+export default function EntryTable({ searchInput }) {
   const { entry } = useSelector((state) => state.Entry.get);
   const navigate = useNavigate();
   const dispatch = useDispatch();

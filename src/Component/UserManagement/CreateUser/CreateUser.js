@@ -35,7 +35,7 @@ const CreateUser = () => {
     email: "",
     password: "",
     contactNumber: "",
-    role: "",
+    role: "broker",
   };
   const onSubmit = (values) => {
     console.log(values);
@@ -98,6 +98,7 @@ const CreateUser = () => {
                   heading="Role"
                   handleChange={handleChange}
                   name="role"
+                  value={values.role}
                   error={touched.role && Boolean(errors.role)}
                   helperText={touched.role ? errors.role : ""}
                   data={roleData}

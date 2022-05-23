@@ -15,6 +15,7 @@ import Logo from "../Assets/LogoLeft.png";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import AccountCircleOutlined from "@mui/icons-material/AccountCircleOutlined";
 import { useSelector } from "react-redux";
+import { CustomViewport } from "../Common/CustomViewport";
 const DrawerLeft = ({
   open,
   handleDrawerClose,
@@ -22,33 +23,19 @@ const DrawerLeft = ({
   setOpen,
   handle,
 }) => {
-  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
   const navigate = useNavigate();
   const { isAuth, admin } = useSelector((state) => state.Login);
+  const widthPort = CustomViewport();
   useEffect(() => {
-    if (windowWidth) {
-      window.addEventListener("resize", update);
-    }
     if (isAuth === false) {
       navigate("/login");
     }
-  }, [isAuth, windowWidth]);
-
-  const update = () => {
-    setWindowWidth(window.innerWidth);
-    setOpen(false);
-  };
-  let res = false;
-  if (windowWidth <= 957) {
-    res = true;
-  } else {
-    res = false;
-  }
+  }, [isAuth]);
   return isAuth ? (
     <Box sx={{ display: "flex" }}>
       <Drawer
         variant="permanent"
-        style={{ position: res ? "absolute" : "initial" }}
+        style={{ position: widthPort < 956 ? "absolute" : "initial" }}
         anchor="left"
         open={open}
       >
@@ -202,7 +189,7 @@ const adminData = [
   // },
 ];
 
-const drawerWidth = 230;
+const drawerWidth = 220;
 const openedMixin = (theme) => ({
   width: drawerWidth,
   transition: theme.transitions.create("width", {

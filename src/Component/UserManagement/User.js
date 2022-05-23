@@ -11,36 +11,42 @@ const User = () => {
   const navigate = useNavigate();
   const { isAuth, admin } = useSelector((state) => state.Login);
   useEffect(() => {
-    if(isAuth){
+    if (isAuth) {
       dispatch(GetUserFunction());
     }
     if (isAuth === false) {
       navigate("/login");
     }
   }, [isAuth]);
-
-  return ( isAuth ?
+  const [searchInput, setSearchInput] = React.useState("");
+  return isAuth ? (
     <BasicLayout heading="User Management">
-      <TableHeaderLayout>
-        {admin.user.role === "admin" ? <Grid
-          item
-          lg={3}
-          md={3}
-          sm={6}
-          xs={6}
-          display="flex"
-          justifyContent="flex-end"
-        >
-          <Link to={"/create-user"}>
-            <Button variant="contained" color="primary">
-              {/* <AddIcon /> */}
-              Create User
-            </Button>
-          </Link>
-        </Grid> : ""}
+      <TableHeaderLayout setSearchInput={setSearchInput}>
+        {admin.user.role === "admin" ? (
+          <Grid
+            item
+            lg={3}
+            md={3}
+            sm={6}
+            xs={6}
+            display="flex"
+            justifyContent="flex-end"
+          >
+            <Link to={"/create-user"}>
+              <Button variant="contained" color="primary">
+                {/* <AddIcon /> */}
+                Create User
+              </Button>
+            </Link>
+          </Grid>
+        ) : (
+          ""
+        )}
       </TableHeaderLayout>
-      <UserTable />
-    </BasicLayout> : ""
+      <UserTable searchInput={searchInput} />
+    </BasicLayout>
+  ) : (
+    ""
   );
 };
 

@@ -19,10 +19,10 @@ const Entry = () => {
       navigate("/login");
     }
   }, [isAuth]);
-
+  const [searchInput, setSearchInput] = React.useState("");
   return ( isAuth ? 
     <BasicLayout heading="Entry">
-     <TableHeaderLayout>
+     <TableHeaderLayout setSearchInput={setSearchInput}>
         {admin.user.role === "entry team" ? <Grid
           item
           lg={3}
@@ -40,7 +40,7 @@ const Entry = () => {
           </Link>
         </Grid> : ""}
       </TableHeaderLayout>
-      <EntryTable />
+      <EntryTable searchInput={searchInput}/>
     </BasicLayout> : ""
   );
 };

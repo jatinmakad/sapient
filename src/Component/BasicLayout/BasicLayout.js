@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
 import DrawerLeft from "./DrawerLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -12,6 +12,9 @@ const BasicLayout = ({ children, heading }) => {
   const [ind, setIndex] = React.useState("");
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  useEffect(()=> {
+   setOpen(false)
+  },[])
   const handleDrawerClose = () => {
     setOpen(false);
   };

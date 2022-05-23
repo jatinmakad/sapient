@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 import Loader from "../Common/Loader";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
-export default function UserTable() {
+export default function UserTable({ searchInput }) {
   const { data } = useSelector((state) => state.Register.get.users);
   const navigate = useNavigate();
   const { isAuth } = useSelector((state) => state.Login);
@@ -22,10 +22,17 @@ export default function UserTable() {
       navigate("/login");
     }
   }, [isAuth]);
+  let updatedArray = data.filter(
+    (e) => e.name.toLowerCase().search(searchInput.toLowerCase().trim()) !== -1
+  );
   return (
     <TableContainer component={Paper}>
       {!data ? (
         <Loader />
+      ) : updatedArray.length === 0 ? (
+        <p className="w-full flex justify-center items-center font-semibold text-3xl pt-3 pb-3">
+          No Record Found
+        </p>
       ) : (
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -46,8 +53,8 @@ export default function UserTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data &&
-              data.map((row, index) => (
+            {updatedArray &&
+              updatedArray.map((row, index) => (
                 <TableRow sx={{ border: "none" }}>
                   <StyledTableCell component="th" scope="row">
                     {index + 1}
@@ -59,12 +66,12 @@ export default function UserTable() {
                     {/* <StatusColor status={row.status} /> */}
                     {row.contactNumber}
                   </StyledTableCell>
-                  <StyledTableCell align="left">
+                  {/* <StyledTableCell align="left">
                     <div className="flex justify-evenly items-center">
                       <EditIcon className="text-blue-700 cursor-pointer" />
                       <DeleteIcon className="text-red-700 cursor-pointer" />
                     </div>
-                  </StyledTableCell>
+                  </StyledTableCell> */}
                 </TableRow>
               ))}
           </TableBody>
@@ -116,8 +123,8 @@ const headerCell = [
     value: "Contact Number",
     align: "left",
   },
-  {
-    value: "Action",
-    align: "center",
-  },
+  // {
+  //   value: "Action",
+  //   align: "center",
+  // },
 ];

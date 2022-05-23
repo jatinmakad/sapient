@@ -22,6 +22,7 @@ const FormikDropdown = ({
         size="small"
         onChange={handleChange}
         error={error}
+        value={value}
         helperText={helperText}
       >
         {data && data.map((r) => {
