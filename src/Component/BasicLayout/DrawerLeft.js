@@ -83,6 +83,8 @@ const DrawerLeft = ({
                 ? adminData
                 : admin.user.role === "entry team"
                 ? EntryData
+                : admin.user.role === "coordination team"
+                ? CoordinationData
                 : ""
               ).map((item) => {
                 return (
@@ -143,6 +145,24 @@ const EntryData = [
     text: "Entry Team",
     icon: DashboardOutlinedIcon,
     click: "/entry",
+  },
+  {
+    text: "Your Work",
+    icon: DashboardOutlinedIcon,
+    click: "/your-work",
+  },
+];
+
+const CoordinationData = [
+  {
+    text: "Dashboard",
+    icon: DashboardOutlinedIcon,
+    click: "/dashboard",
+  },
+  {
+    text: "Cordination Team",
+    icon: DashboardOutlinedIcon,
+    click: "/coordination",
   },
 ];
 

@@ -1,4 +1,4 @@
-import { Grid, Button, TextField } from "@mui/material";
+import { Grid, Button, TextField, Autocomplete } from "@mui/material";
 import React, { useRef, useEffect, useState } from "react";
 import * as Yup from "yup";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -14,19 +14,16 @@ import { DatePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import Loader from "../../Common/Loader";
+import { Cities, State } from "../../Common/Constant/Constant";
 const UpdateEntry = () => {
   const formikRef = useRef();
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isSuccess } = useSelector((state) => state.Entry.create);
   const { isAuth } = useSelector((state) => state.Login);
   const { entry } = useSelector((state) => state.Entry.get);
-  const { updateSuccess } = useSelector((state) => state.Entry.update);
+  const { updateSuccess,isLoading } = useSelector((state) => state.Entry.update);
   useEffect(() => {
-    if (isSuccess) {
-      navigate("/entry");
-    }
     if (!isAuth) {
       navigate("/login");
     }
@@ -68,7 +65,7 @@ const UpdateEntry = () => {
         formikRef.current.setFieldValue("invoiceValue",updated[0].invoiceValue);
       }
     }
-  }, [isSuccess, isAuth, id,updateSuccess]);
+  }, [ isAuth, id,updateSuccess]);
   const validationSchema = Yup.object({
     reportRefrenceNo: Yup.number().required("Required"),
     finanicalYear: Yup.string().required("Required"),
@@ -128,6 +125,7 @@ const UpdateEntry = () => {
         innerRef={formikRef}
       >
         {({ errors, handleChange, values, touched, setFieldValue }) => (
+          isLoading ? <Loader/> :
           <Form className="bg-white rounded-sm p-4 pt-5 pb-5">
             <Grid lg={12} md={12} sm={12} xs={12} container spacing={2}>
               <Grid lg={4} item>
@@ -259,17 +257,30 @@ const UpdateEntry = () => {
                   helperText={touched.intimation ? errors.intimation : ""}
                 />
               </Grid>
-              <Grid lg={4} item>
-                <FomikTextField
-                  heading="City"
-                  handleChange={handleChange}
-                  name="city"
-                  value={values.city}
-                  type="text"
-                  error={touched.city && Boolean(errors.city)}
-                  helperText={touched.city ? errors.city : ""}
-                />
-              </Grid>
+
+              <Grid lg={4} md={6} sm={12} xs={12} item>
+                  <div className="flex flex-col justify-start">
+                    <p className="text-sm mb-2">City</p>
+                    <Autocomplete
+                      value={values.city}
+                      fullWidth
+                      onChange={(event, newValue) => {
+                        setFieldValue("city", newValue);
+                      }}
+                      size="small"
+                      options={Cities}
+                      renderInput={(params) => (
+                        <TextField size="small" fullWidth {...params} error={
+                          touched.city && Boolean(errors.city)
+                        }
+                        placeholder="City"
+                        helperText={
+                          touched.city ? errors.city : ""
+                        }/>
+                      )}
+                    />
+                  </div>
+                </Grid>
               <Grid lg={4} item>
                 <FomikTextField
                   heading="Insured"
@@ -297,18 +308,30 @@ const UpdateEntry = () => {
                   }
                 />
               </Grid>
-              <Grid lg={4} item>
-                <FomikTextField
-                  heading="Loss City"
-                  handleChange={handleChange}
-                  name="lossCity"
-                  value={values.lossCity}
-                  type="text"
-                  error={touched.lossCity && Boolean(errors.lossCity)}
-                  helperText={touched.lossCity ? errors.lossCity : ""}
-                />
-              </Grid>
-
+              <Grid lg={4} md={6} sm={12} xs={12} item>
+                  <div className="flex flex-col justify-start">
+                    <p className="text-sm mb-2">Loss City</p>
+                    <Autocomplete
+                      value={values.lossCity}
+                      fullWidth
+                      onChange={(event, newValue) => {
+                        setFieldValue("lossCity", newValue);
+                      }}
+                      size="small"
+                      options={Cities}
+                      renderInput={(params) => (
+                        <TextField
+                          size="small"
+                          placeholder="Loss City"
+                          fullWidth
+                          {...params}
+                          error={touched.lossCity && Boolean(errors.lossCity)}
+                          helperText={touched.lossCity ? errors.lossCity : ""}
+                        />
+                      )}
+                    />
+                  </div>
+                </Grid>
               <Grid lg={4} item>
                 <div className="flex flex-col justify-start">
                   <p className="text-sm mb-2">Date</p>
@@ -365,17 +388,34 @@ const UpdateEntry = () => {
                 />
               </Grid>
 
-              <Grid lg={4} item>
-                <FomikTextField
-                  heading="Insured City"
-                  handleChange={handleChange}
-                  name="insuredCity"
-                  value={values.insuredCity}
-                  type="text"
-                  error={touched.insuredCity && Boolean(errors.insuredCity)}
-                  helperText={touched.insuredCity ? errors.insuredCity : ""}
-                />
-              </Grid>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
+                  <div className="flex flex-col justify-start">
+                    <p className="text-sm mb-2">Insured City</p>
+                    <Autocomplete
+                      value={values.insuredCity}
+                      fullWidth
+                      onChange={(event, newValue) => {
+                        setFieldValue("insuredCity", newValue);
+                      }}
+                      size="small"
+                      options={Cities}
+                      renderInput={(params) => (
+                        <TextField
+                          size="small"
+                          fullWidth
+                          placeholder="Insured City"
+                          {...params}
+                          error={
+                            touched.insuredCity && Boolean(errors.insuredCity)
+                          }
+                          helperText={
+                            touched.insuredCity ? errors.insuredCity : ""
+                          }
+                        />
+                      )}
+                    />
+                  </div>
+                </Grid>
 
               <Grid lg={4} item>
                 <FomikTextField
@@ -387,17 +427,30 @@ const UpdateEntry = () => {
                   helperText={touched.consignor ? errors.consignor : ""}
                 />
               </Grid>
-              <Grid lg={4} item>
-                <FomikTextField
-                  heading="State"
-                  handleChange={handleChange}
-                  name="state"
-                  value={values.state}
-                  type="text"
-                  error={touched.state && Boolean(errors.state)}
-                  helperText={touched.state ? errors.state : ""}
-                />
-              </Grid>
+              <Grid lg={4} md={6} sm={12} xs={12} item>
+                  <div className="flex flex-col justify-start">
+                    <p className="text-sm mb-2">State</p>
+                    <Autocomplete
+                      value={values.state}
+                      fullWidth
+                      onChange={(event, newValue) => {
+                        setFieldValue("state", newValue);
+                      }}
+                      size="small"
+                      options={State}
+                      renderInput={(params) => (
+                        <TextField
+                          size="small"
+                          placeholder="State"
+                          fullWidth
+                          {...params}
+                          error={touched.state && Boolean(errors.state)}
+                          helperText={touched.state ? errors.state : ""}
+                        />
+                      )}
+                    />
+                  </div>
+                </Grid>
 
               <Grid lg={4} item>
                 <FomikTextField

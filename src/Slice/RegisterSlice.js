@@ -82,7 +82,23 @@ export const GetUserFunction = () => {
   return async (dispatch) => {
     try {
       dispatch(GetUserPending());
-      const { data } = await axios.get(`https://sap-user-microservice.herokuapp.com/getUsers`);
+
+       let link = "https://sap-user-microservice.herokuapp.com/getUsers";
+      const { data } = await axios.get(link);
+      dispatch(GetUserSuccess(data));
+    } catch (error) {
+      ToastComponent(error.response.data.message, "error");
+      dispatch(GetUserFail(error));
+    }
+  };
+};
+
+export const GetUserFunctionSearch = (search) => {
+  return async (dispatch) => {
+    try {
+      dispatch(GetUserPending())
+       let link = `https://sap-user-microservice.herokuapp.com/getUsers?name=${search}`;
+      const { data } = await axios.get(link);
       dispatch(GetUserSuccess(data));
     } catch (error) {
       ToastComponent(error.response.data.message, "error");

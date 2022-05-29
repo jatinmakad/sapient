@@ -15,9 +15,9 @@ const initialState = {
   delete: {
     deleteSuccess: false,
   },
-  update:{
-    updateSuccess:false
-  }
+  update: {
+    updateSuccess: false,
+  },
 };
 const EntrySlice = createSlice({
   name: "Entry",
@@ -58,10 +58,14 @@ const EntrySlice = createSlice({
     DeleteEntryCleanup: (state) => {
       state.delete.deleteSuccess = false;
     },
+    UpdateEntryBefore: (state) => {
+      state.update.isLoading = true;
+    },
     UpdateEntry: (state) => {
       state.update.updateSuccess = true;
+      state.update.isLoading = false;
     },
-   UpdateEntryCleanup: (state) => {
+    UpdateEntryCleanup: (state) => {
       state.update.updateSuccess = false;
     },
   },
@@ -79,7 +83,8 @@ export const {
   DeleteEntry,
   DeleteEntryCleanup,
   UpdateEntry,
-  UpdateEntryCleanup
+  UpdateEntryCleanup,
+  UpdateEntryBefore
 } = actions;
 export default EntrySlice.reducer;
 
@@ -87,7 +92,9 @@ export const GetEntryFunction = () => {
   return async (dispatch) => {
     try {
       dispatch(GetEntryPending());
-      const { data } = await axios.get(`https://sap-data-management-mcs.herokuapp.com/get-job-lists`);
+      const { data } = await axios.get(
+        `https://sap-data-management-mcs.herokuapp.com/get-job-lists`
+      );
       console.log(data, "data");
       dispatch(GetEntrySuccess(data));
     } catch (error) {
@@ -120,7 +127,9 @@ export const CreateEntryFunction = (Data) => {
 
 export const DeletEntryFunction = (id) => {
   return async (dispatch) => {
-    const { data } = await axios.delete(`https://sap-data-management-mcs.herokuapp.com/delete-job/${id}`);
+    const { data } = await axios.delete(
+      `https://sap-data-management-mcs.herokuapp.com/delete-job/${id}`
+    );
     if (data.success === true) {
       dispatch(DeleteEntry(data.success));
       ToastComponent("Entry Deleted SuccessFully", "success");
@@ -129,10 +138,15 @@ export const DeletEntryFunction = (id) => {
   };
 };
 
-export const UpdateEntryFunction = (id,Data) => {
+export const UpdateEntryFunction = (id, Data) => {
   return async (dispatch) => {
     const config = { headers: { "Content-Type": "application/json" } };
-    const { data } = await axios.put(`https://sap-data-management-mcs.herokuapp.com/edit-job/${id}`,Data,config);
+    dispatch(UpdateEntryBefore())
+    const { data } = await axios.put(
+      `https://sap-data-management-mcs.herokuapp.com/edit-job/${id}`,
+      Data,
+      config
+    );
     if (data.success === true) {
       dispatch(UpdateEntry(data.success));
       ToastComponent("Entry Updated SuccessFully", "success");

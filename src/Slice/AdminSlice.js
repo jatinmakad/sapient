@@ -55,7 +55,7 @@ export const LoginFunction = (Data) => {
         Data,
         config
       );
-      localStorage.setItem("auth", JSON.stringify(data));
+      // sessionStorage.setItem("auth", JSON.stringify(data));
       dispatch(loginSuccess(data));
       if (data.success === true) {
         ToastComponent("Login Successfully", "success");
@@ -68,7 +68,7 @@ export const LoginFunction = (Data) => {
 };
 export const LogoutFunction = () => {
   return async (dispatch) => {
-    localStorage.removeItem("auth");
+    // sessionStorage.removeItem("auth");
     dispatch(logout());
     ToastComponent("Logout Successfully", "success");
   };

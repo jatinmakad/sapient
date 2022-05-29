@@ -9,27 +9,27 @@ import Paper from "@mui/material/Paper";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { styled } from "@mui/material/styles";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Common/Loader";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import { GetUserFunction } from "../../Slice/RegisterSlice";
 export default function UserTable({ searchInput }) {
   const { data } = useSelector((state) => state.Register.get.users);
+  const { isLoading } = useSelector((state) => state.Register.get);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { isAuth } = useSelector((state) => state.Login);
   useEffect(() => {
     if (isAuth === false) {
       navigate("/login");
     }
   }, [isAuth]);
-  let updatedArray = data ? data.filter(
-    (e) => e.name.toLowerCase().search(searchInput.toLowerCase().trim()) !== -1
-  ) : ""
   return (
     <TableContainer component={Paper}>
-      {!data ? (
+      {isLoading ? (
         <Loader />
-      ) : updatedArray.length === 0 ? (
+      ) : data && data.length === 0 ? (
         <p className="w-full flex justify-center items-center font-semibold text-3xl pt-3 pb-3">
           No Record Found
         </p>
@@ -53,8 +53,8 @@ export default function UserTable({ searchInput }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {updatedArray &&
-              updatedArray.map((row, index) => (
+            {data &&
+              data.map((row, index) => (
                 <TableRow sx={{ border: "none" }}>
                   <StyledTableCell component="th" scope="row">
                     {index + 1}

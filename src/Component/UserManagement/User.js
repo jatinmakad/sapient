@@ -5,20 +5,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import UserTable from "./UserTable";
 import { Button, Grid } from "@mui/material";
-import { GetUserFunction } from "../../Slice/RegisterSlice";
+import {
+  GetUserFunction,
+  GetUserFunctionSearch,
+} from "../../Slice/RegisterSlice";
 const User = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuth, admin } = useSelector((state) => state.Login);
+  const [searchInput, setSearchInput] = React.useState("");
   useEffect(() => {
-    if (isAuth) {
+    if (searchInput) {
+      dispatch(GetUserFunctionSearch(searchInput));
+    } else {
       dispatch(GetUserFunction());
     }
     if (isAuth === false) {
       navigate("/login");
     }
-  }, [isAuth]);
-  const [searchInput, setSearchInput] = React.useState("");
+  }, [isAuth, searchInput]);
+
   return isAuth ? (
     <BasicLayout heading="User Management">
       <TableHeaderLayout setSearchInput={setSearchInput}>

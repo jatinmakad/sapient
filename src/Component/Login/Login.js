@@ -23,7 +23,6 @@ const Login = () => {
     showPassword: false,
   });
   const { isAuth, isLoading } = useSelector((state) => state.Login);
-  console.log(isLoading, "=========");
   useEffect(() => {
     if (isAuth) {
       navigate("/dashboard");
