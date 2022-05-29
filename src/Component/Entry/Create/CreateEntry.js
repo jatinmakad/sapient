@@ -18,7 +18,7 @@ const CreateEntry = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isSuccess, isLoading } = useSelector((state) => state.Entry.create);
-  const { isAuth } = useSelector((state) => state.Login);
+  const { isAuth,admin } = useSelector((state) => state.Login);
   useEffect(() => {
     if (isSuccess) {
       navigate("/entry");
@@ -28,6 +28,7 @@ const CreateEntry = () => {
     }
   }, [isSuccess, isAuth]);
   const validationSchema = Yup.object({
+    ownerId: Yup.string().required("Reqiured"),
     reportRefrenceNo: Yup.number().required("Required"),
     finanicalYear: Yup.string().required("Required"),
     insuer: Yup.string().required("Required"),
@@ -72,6 +73,7 @@ const CreateEntry = () => {
     consignor: "",
     state: "",
     invoiceValue: "",
+    ownerId: admin.user._id,
   };
   const onSubmit = (values) => {
     dispatch(CreateEntryFunction(values));

@@ -13,7 +13,7 @@ const Entry = () => {
 
   useEffect(() => {
     if (isAuth) {
-      dispatch(GetEntryFunction());
+      dispatch(GetEntryFunction(admin.user._id));
     }
     if (isAuth === false) {
       navigate("/login");

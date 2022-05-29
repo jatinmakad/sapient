@@ -88,12 +88,12 @@ export const {
 } = actions;
 export default EntrySlice.reducer;
 
-export const GetEntryFunction = () => {
+export const GetEntryFunction = (id) => {
   return async (dispatch) => {
     try {
       dispatch(GetEntryPending());
       const { data } = await axios.get(
-        `https://sap-data-management-mcs.herokuapp.com/get-job-lists`
+        `https://sap-data-management-mcs.herokuapp.com/get-job-lists/${id}`
       );
       console.log(data, "data");
       dispatch(GetEntrySuccess(data));

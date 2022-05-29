@@ -28,13 +28,13 @@ const YourWork = () => {
   const { deleteSuccess } = useSelector((state) => state.Entry.delete);
   useEffect(() => {
     if (isAuth) {
-      dispatch(GetEntryFunction());
+      dispatch(GetEntryFunction(admin.user._id));
     }
     if (isAuth === false) {
       navigate("/login");
     }
     if (deleteSuccess) {
-      dispatch(GetEntryFunction());
+      dispatch(GetEntryFunction(admin.user._id));
       setOpen(false);
     }
   }, [isAuth, deleteSuccess]);

@@ -27,7 +27,7 @@ export default function EntryTable({ searchInput }) {
       navigate("/login");
     }
     if (deleteSuccess) {
-      dispatch(GetEntryFunction());
+      dispatch(GetEntryFunction(admin.user._id));
       setOpen(false);
     }
   }, [isAuth, deleteSuccess]);

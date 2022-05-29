@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import ToastComponent from "../Component/Common/TaostComponent";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
+
 const initialState = {
   isLoading: false,
   isAuth: false,
@@ -55,10 +58,19 @@ export const LoginFunction = (Data) => {
         Data,
         config
       );
-      // sessionStorage.setItem("auth", JSON.stringify(data));
-      dispatch(loginSuccess(data));
       if (data.success === true) {
-        ToastComponent("Login Successfully", "success");
+        cookies.set("auth", JSON.stringify(data), { path: "/" });
+        const verify = await axios.get(`https://sap-user-microservice.herokuapp.com/verify-user`, {
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        });
+        if (verify.data.responseCode === 200) {
+          dispatch(loginSuccess(data));
+          ToastComponent("Login Successfully", "success");
+        } else {
+          ToastComponent("Somthing went wrong", "error");
+        }
       }
     } catch (error) {
       ToastComponent("Somthing went wrong", "error");
@@ -68,7 +80,7 @@ export const LoginFunction = (Data) => {
 };
 export const LogoutFunction = () => {
   return async (dispatch) => {
-    // sessionStorage.removeItem("auth");
+    cookies.remove("auth", { path: "/" });
     dispatch(logout());
     ToastComponent("Logout Successfully", "success");
   };

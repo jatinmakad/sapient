@@ -20,7 +20,7 @@ const UpdateEntry = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAuth } = useSelector((state) => state.Login);
+  const { isAuth,admin } = useSelector((state) => state.Login);
   const { entry } = useSelector((state) => state.Entry.get);
   const { updateSuccess,isLoading } = useSelector((state) => state.Entry.update);
   useEffect(() => {
@@ -28,7 +28,7 @@ const UpdateEntry = () => {
       navigate("/login");
     }
     if (isAuth) {
-      dispatch(GetEntryFunction());
+      dispatch(GetEntryFunction(admin.user._id));
     }
     if(updateSuccess){
       navigate("/entry");
