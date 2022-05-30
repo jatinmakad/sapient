@@ -24,7 +24,7 @@ const YourWork = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuth, admin } = useSelector((state) => state.Login);
-  const { entry } = useSelector((state) => state.Entry.get);
+  const { entry, isLoading } = useSelector((state) => state.Entry.get);
   const { deleteSuccess } = useSelector((state) => state.Entry.delete);
   useEffect(() => {
     if (isAuth) {
@@ -59,8 +59,12 @@ const YourWork = () => {
     <BasicLayout heading="Your Work">
       <TableHeaderLayout setSearchInput={setSearchInput} />
       <TableContainer component={Paper}>
-        {!entry ? (
+        {isLoading ? (
           <Loader />
+        ) : entry.data && !entry.data.length ? (
+          <p className="w-full flex justify-center items-center font-semibold text-3xl pt-3 pb-3">
+            No Record Found
+          </p>
         ) : (
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>

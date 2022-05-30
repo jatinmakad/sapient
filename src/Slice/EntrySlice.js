@@ -84,18 +84,17 @@ export const {
   DeleteEntryCleanup,
   UpdateEntry,
   UpdateEntryCleanup,
-  UpdateEntryBefore
+  UpdateEntryBefore,
 } = actions;
 export default EntrySlice.reducer;
 
 export const GetEntryFunction = (id) => {
+  console.log(id, "id");
   return async (dispatch) => {
     try {
       dispatch(GetEntryPending());
-      const { data } = await axios.get(
-        `https://sap-data-management-mcs.herokuapp.com/get-job-lists/${id}`
-      );
-      console.log(data, "data");
+      let link = `https://sap-data-management-mcs.herokuapp.com/get-job-lists/${id}`;
+      const { data } = await axios.get(link);
       dispatch(GetEntrySuccess(data));
     } catch (error) {
       ToastComponent("Somthing went wrong", "error");
@@ -141,7 +140,7 @@ export const DeletEntryFunction = (id) => {
 export const UpdateEntryFunction = (id, Data) => {
   return async (dispatch) => {
     const config = { headers: { "Content-Type": "application/json" } };
-    dispatch(UpdateEntryBefore())
+    dispatch(UpdateEntryBefore());
     const { data } = await axios.put(
       `https://sap-data-management-mcs.herokuapp.com/edit-job/${id}`,
       Data,

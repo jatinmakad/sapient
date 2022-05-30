@@ -1,11 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "../Component/Dashboard/Dashboard";
 import Entry from "../Component/Entry/Entry";
 import Login from "../Component/Login/Login";
@@ -18,15 +12,16 @@ import { loginSuccess } from "../Slice/AdminSlice";
 import EntryDetails from "../Component/Entry/EntryDetails";
 import YourWork from "../Component/Entry/YourWork/YourWork";
 import Coordination from "../Component/Coordination/Coordination";
+import Cookie from "universal-cookie";
 const RoutesPage = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    let local = localStorage.getItem("auth");
-    if (local === null) {
-      return null
+    var cookie = new Cookie();
+    let local = cookie.get("auth");
+    if (local === undefined) {
     } else {
-      let updated = JSON.parse(local);
-      dispatch(loginSuccess(updated));
+      cookie.set("auth", JSON.stringify(local), { path: "/" });
+      dispatch(loginSuccess(local));
     }
   }, []);
   return (
@@ -39,13 +34,13 @@ const RoutesPage = () => {
         <Route path={"/entry"} element={<Entry />} />
         <Route path={"/create-entry"} element={<CreateEntry />} />
         <Route path={"/update-entry/:id"} element={<UpdateEntry />} />
-        <Route path={"/entry-details/:id"} element={<EntryDetails/>} />
-        <Route path={"/your-work"} element={<YourWork/>} />
+        <Route path={"/entry-details/:id"} element={<EntryDetails />} />
+        <Route path={"/your-work"} element={<YourWork />} />
         /* User */
         <Route path={"/user"} element={<User />} />
         <Route path={"/create-user"} element={<CreateUser />} />
-      /* Coordination */
-      <Route path={"/coordination"} element={<Coordination />} />
+        /* Coordination */
+        <Route path={"/coordination"} element={<Coordination />} />
       </Routes>
     </BrowserRouter>
   );

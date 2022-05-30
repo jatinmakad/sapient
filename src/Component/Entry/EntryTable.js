@@ -17,7 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 import DeleteDialog from "../Common/DeleteDialog";
 import { DeletEntryFunction, GetEntryFunction } from "../../Slice/EntrySlice";
 export default function EntryTable({ searchInput }) {
-  const { entry } = useSelector((state) => state.Entry.get);
+  const { entry,isLoading } = useSelector((state) => state.Entry.get);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isAuth, admin } = useSelector((state) => state.Login);
@@ -27,7 +27,7 @@ export default function EntryTable({ searchInput }) {
       navigate("/login");
     }
     if (deleteSuccess) {
-      dispatch(GetEntryFunction(admin.user._id));
+      dispatch(GetEntryFunction());
       setOpen(false);
     }
   }, [isAuth, deleteSuccess]);
@@ -48,7 +48,7 @@ export default function EntryTable({ searchInput }) {
   };
   return (
     <TableContainer component={Paper}>
-      {!entry ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
