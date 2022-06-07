@@ -18,6 +18,9 @@ const initialState = {
   update: {
     updateSuccess: false,
   },
+  updateStatus: {
+    updateStatusSuccess: false,
+  },
 };
 const EntrySlice = createSlice({
   name: "Entry",
@@ -68,6 +71,17 @@ const EntrySlice = createSlice({
     UpdateEntryCleanup: (state) => {
       state.update.updateSuccess = false;
     },
+
+    UpdateEntryStatusBefore: (state) => {
+      state.updateStatus.isLoading = true;
+    },
+    UpdateEntryStatus: (state) => {
+      state.updateStatus.updateStatusSuccess = true;
+      state.updateStatus.isLoading = false;
+    },
+    UpdateEntryStatusCleanup: (state) => {
+      state.updateStatus.updateStatusSuccess = false;
+    },
   },
 });
 
@@ -85,6 +99,9 @@ export const {
   UpdateEntry,
   UpdateEntryCleanup,
   UpdateEntryBefore,
+  UpdateEntryStatusBefore,
+  UpdateEntryStatus,
+  UpdateEntryStatusCleanup,
 } = actions;
 export default EntrySlice.reducer;
 
@@ -93,7 +110,7 @@ export const GetEntryFunction = (id) => {
   return async (dispatch) => {
     try {
       dispatch(GetEntryPending());
-      let link = `https://sap-data-management-mcs.herokuapp.com/get-job-lists/${id}`;
+      let link = `https://sap-data-management-mcs.herokuapp.com/get-job-lists`;
       const { data } = await axios.get(link);
       dispatch(GetEntrySuccess(data));
     } catch (error) {
@@ -102,6 +119,22 @@ export const GetEntryFunction = (id) => {
     }
   };
 };
+
+export const GetEntryFunctionId = (id) => {
+  return async (dispatch) => {
+    try {
+      dispatch(GetEntryPending());
+      let link = `https://sap-data-management-mcs.herokuapp.com/view-my-jobs?currentJobHolder=${id}`;
+      const { data } = await axios.get(link);
+      dispatch(GetEntrySuccess(data));
+    } catch (error) {
+      ToastComponent("Somthing went wrong", "error");
+      dispatch(GetEntryFail(error));
+    }
+  };
+};
+// https://sap-data-management-mcs.herokuapp.com/view-my-jobs?currentJobHolder=628b6d5ee298a1372b59c0c5
+
 export const CreateEntryFunction = (Data) => {
   return async (dispatch) => {
     try {
@@ -151,5 +184,22 @@ export const UpdateEntryFunction = (id, Data) => {
       ToastComponent("Entry Updated SuccessFully", "success");
     }
     dispatch(UpdateEntryCleanup());
+  };
+};
+
+export const UpdateEntryStatusFunction = (id, status) => {
+  console.log(id,status)
+  return async (dispatch) => {
+    const config = { headers: { "Content-Type": "application/json" } };
+    dispatch(UpdateEntryStatusBefore());
+    const { data } = await axios.post(
+      `https://sap-data-management-mcs.herokuapp.com/update-task-status?uniqueJobId=${id}&jobStatus=${status}`,
+      config
+    );
+    if (data.success === true) {
+      dispatch(UpdateEntryStatus());
+      ToastComponent("Entry Status Updated SuccessFully", "success");
+    }
+    dispatch(UpdateEntryStatusCleanup());
   };
 };

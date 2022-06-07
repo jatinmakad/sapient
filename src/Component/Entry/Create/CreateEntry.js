@@ -18,7 +18,7 @@ const CreateEntry = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isSuccess, isLoading } = useSelector((state) => state.Entry.create);
-  const { isAuth,admin } = useSelector((state) => state.Login);
+  const { isAuth, admin } = useSelector((state) => state.Login);
   useEffect(() => {
     if (isSuccess) {
       navigate("/entry");
@@ -28,7 +28,6 @@ const CreateEntry = () => {
     }
   }, [isSuccess, isAuth]);
   const validationSchema = Yup.object({
-    ownerId: Yup.string().required("Reqiured"),
     reportRefrenceNo: Yup.number().required("Required"),
     finanicalYear: Yup.string().required("Required"),
     insuer: Yup.string().required("Required"),
@@ -73,10 +72,15 @@ const CreateEntry = () => {
     consignor: "",
     state: "",
     invoiceValue: "",
-    ownerId: admin.user._id,
   };
   const onSubmit = (values) => {
-    dispatch(CreateEntryFunction(values));
+    dispatch(
+      CreateEntryFunction({
+        ...values,
+        currentJobHolder: admin.user._id,
+        ownerId: admin.user._id,
+      })
+    );
   };
   return (
     <BasicLayout heading="Create Entry">
@@ -155,17 +159,17 @@ const CreateEntry = () => {
                   />
                 </Grid>
                 <Grid lg={4} item>
-                <FomikTextField
-                  heading="Claim No."
-                  handleChange={handleChange}
-                  name="claimNo"
-                  value={values.claimNo}
-                  type="text"
-                  error={touched.claimNo && Boolean(errors.claimNo)}
-                  helperText={touched.claimNo ? errors.claimNo : ""}
-                />
-              </Grid>
-                
+                  <FomikTextField
+                    heading="Claim No."
+                    handleChange={handleChange}
+                    name="claimNo"
+                    value={values.claimNo}
+                    type="text"
+                    error={touched.claimNo && Boolean(errors.claimNo)}
+                    helperText={touched.claimNo ? errors.claimNo : ""}
+                  />
+                </Grid>
+
                 <Grid lg={4} md={6} sm={12} xs={12} item>
                   <FomikTextField
                     heading="Policy No."
@@ -176,7 +180,7 @@ const CreateEntry = () => {
                     helperText={touched.policyNo ? errors.policyNo : ""}
                   />
                 </Grid>
-                
+
                 <Grid lg={4} md={6} sm={12} xs={12} item>
                   <FomikTextField
                     heading="Broker"
@@ -414,9 +418,6 @@ const CreateEntry = () => {
                     helperText={touched.age ? errors.age : ""}
                   />
                 </Grid>
-
-                
-                
 
                 <Grid
                   lg={12}

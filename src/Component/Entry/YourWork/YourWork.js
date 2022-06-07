@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   DeletEntryFunction,
   GetEntryFunction,
+  GetEntryFunctionId,
+  UpdateEntryStatusFunction,
 } from "../../../Slice/EntrySlice";
 import { Link, useNavigate } from "react-router-dom";
 import TableHeaderLayout from "../../Common/TableLayout/TableHeaderLayout";
@@ -20,24 +22,33 @@ import { styled } from "@mui/material/styles";
 import Loader from "../../Common/Loader";
 import moment from "moment";
 import DeleteDialog from "../../Common/DeleteDialog";
+import { setNestedObjectValues } from "formik";
+import { MenuItem, Select } from "@mui/material";
 const YourWork = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuth, admin } = useSelector((state) => state.Login);
   const { entry, isLoading } = useSelector((state) => state.Entry.get);
   const { deleteSuccess } = useSelector((state) => state.Entry.delete);
+  const { updateStatusSuccess } = useSelector(
+    (state) => state.Entry.updateStatus
+  );
+  const [value, setValue] = React.useState("");
   useEffect(() => {
     if (isAuth) {
-      dispatch(GetEntryFunction(admin.user._id));
+      dispatch(GetEntryFunctionId(admin.user._id));
     }
     if (isAuth === false) {
       navigate("/login");
     }
     if (deleteSuccess) {
-      dispatch(GetEntryFunction(admin.user._id));
+      dispatch(GetEntryFunctionId(admin.user._id));
       setOpen(false);
     }
-  }, [isAuth, deleteSuccess]);
+    if (updateStatusSuccess) {
+      dispatch(GetEntryFunctionId(admin.user._id));
+    }
+  }, [isAuth, deleteSuccess, updateStatusSuccess]);
 
   const [open, setOpen] = React.useState(false);
   const [id, setId] = React.useState("");
@@ -54,7 +65,11 @@ const YourWork = () => {
   const deleteAction = (id) => {
     dispatch(DeletEntryFunction(id));
   };
+  const changeValue = (id, e) => {
+    dispatch(UpdateEntryStatusFunction(id, e.target.value));
+  };
   const [searchInput, setSearchInput] = React.useState("");
+  console.log(entry.data);
   return isAuth ? (
     <BasicLayout heading="Your Work">
       <TableHeaderLayout setSearchInput={setSearchInput} />
@@ -104,15 +119,30 @@ const YourWork = () => {
                       {row.insured}
                     </StyledTableCell>
                     <StyledTableCell align="left">
+                      <Select
+                        fullWidth
+                        size="small"
+                        onChange={(e) =>
+                          changeValue(row.uniqueJobId, e)
+                        }
+                        value={row.jobStatus}
+                      >
+                        {data &&
+                          data.map((r) => {
+                            return (
+                              <MenuItem value={r.value}>{r.value}</MenuItem>
+                            );
+                          })}
+                      </Select>
+                    </StyledTableCell>
+                    <StyledTableCell align="left">
                       <div className="flex justify-evenly items-center">
-                        <Link to={`/update-entry/${row.reportRefrenceNo}`}>
+                        <Link to={`/update-entry/${row.uniqueJobId}`}>
                           <EditIcon className="text-blue-700 cursor-pointer" />
                         </Link>
                         <DeleteIcon
                           className="text-red-700 cursor-pointer"
-                          onClick={() =>
-                            handleClickDeleteOpen(row.reportRefrenceNo)
-                          }
+                          onClick={() => handleClickDeleteOpen(row.uniqueJobId)}
                         />
                       </div>
                     </StyledTableCell>
@@ -180,7 +210,23 @@ const headerCell = [
     align: "left",
   },
   {
+    value: "Status",
+    align: "center",
+  },
+  {
     value: "Action",
     align: "center",
+  },
+];
+
+const data = [
+  {
+    value: "OPEN",
+  },
+  {
+    value: "DONE",
+  },
+  {
+    value: "IN-PROGRESS",
   },
 ];
