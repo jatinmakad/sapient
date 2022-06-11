@@ -2,11 +2,7 @@ import React from "react";
 import BasicLayout from "../BasicLayout/BasicLayout";
 
 const Dashboard = () => {
-  return (
-    <BasicLayout heading="Dashboard">
-      <img src="./images/web-devlopment.svg" />
-    </BasicLayout>
-  );
+  return <BasicLayout heading="Dashboard">Dashboard </BasicLayout>;
 };
 
 export default Dashboard;
