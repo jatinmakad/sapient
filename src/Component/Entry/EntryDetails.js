@@ -5,6 +5,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import { Button, Grid, MenuItem, Select } from "@mui/material";
 import { Add, Cancel } from "@mui/icons-material";
+import ToastComponent from "../Common/TaostComponent";
+import { uploadDocuments } from "../../Slice/EntrySlice";
 const EntryDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,31 +25,59 @@ const EntryDetails = () => {
   }, [isAuth, id]);
 
   const [serviceList, setServiceList] = useState([{ service: 1 }]);
+  const [selectedFile, setSelectedFile] = useState();
   const uploadImageField = (e, index) => {
     const id = serviceList.length + 1;
     setServiceList((oldValue) => [...oldValue, { service: id }]);
     e.preventDefault();
   };
-  const onchangeInputImage = async (e, index) => {
-    let data = new FormData();
-    data.append("name", e.target.files[0].name);
-    data.append("file", e.target.files[0]);
-    const image = await fetch(`/api/v1/upload/user-image`, {
-      method: "POST",
-      body: data,
-    });
-    const json = await image.json();
-    let updated = serviceList.map((r) =>
-      r.service === index ? { ...r, url: json } : r
-    );
-    setServiceList(updated);
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    // previewFile(file);
+    setSelectedFile(file);
   };
+
+  // const previewFile = (file) => {
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(file);
+  //   reader.onloadend = () => {
+  //     setPreviewSource(reader.result);
+  //   };
+  // };
+
+  const handleSubmitFile = (e) => {
+    e.preventDefault();
+    if (!selectedFile) return;
+    const reader = new FileReader();
+    reader.readAsDataURL(selectedFile);
+    reader.onloadend = () => {
+      uploadDocuments(reader?.result, data[0].uniqueJobId);
+    };
+    reader.onerror = () => {
+      ToastComponent("something went wrong!");
+    };
+  };
+  // const onchangeInputImage = async (e, index) => {
+  //   console.log(e);
+  //   let data = new FormData();
+  //   data.append("name", e.target.files[0].name);
+  //   data.append("file", e.target.files[0]);
+  //   const image = await fetch(`/api/v1/upload/user-image`, {
+  //     method: "POST",
+  //     body: data,
+  //   });
+  //   const json = await image.json();
+  //   let updated = serviceList.map((r) =>
+  //     r.service === index ? { ...r, url: json } : r
+  //   );
+  //   setServiceList(updated);
+  // };
   const handleServiceRemove = (id) => {
-    let updatedArray = serviceList.filter((r,ind) => ind !== id);
+    let updatedArray = serviceList.filter((r, ind) => ind !== id);
     setServiceList(updatedArray);
   };
 
-  console.log(serviceList)
+  console.log(serviceList);
 
   const innerP = "w-2/5 text-blue-700 font-medium";
   const innerText = "w-3/5";
@@ -153,7 +183,15 @@ const EntryDetails = () => {
           </div>
         </div>
         {admin.user.role === "COORDINATION TEAM" ? (
-          <Grid lg={12} md={12} sm={12} xs={12} container marginBottom={2} spacing={2}>
+          <Grid
+            lg={12}
+            md={12}
+            sm={12}
+            xs={12}
+            container
+            marginBottom={2}
+            spacing={2}
+          >
             <Grid lg={12} md={12} sm={12} xs={12} item>
               <div className="flex flex-col lg:w-2/5 md:w-2/4 sm:w-full w-full justify-start">
                 <p className="text-md mb-2">Status</p>
@@ -191,7 +229,7 @@ const EntryDetails = () => {
                     type="file"
                     id="service"
                     onChange={(e) =>
-                      onchangeInputImage(e, singleService.service)
+                      handleFileInputChange(e, singleService.service)
                     }
                   />
                   <Button
@@ -219,6 +257,7 @@ const EntryDetails = () => {
                 type="submit"
                 sx={{ marginRight: "10px" }}
                 color="primary"
+                onClick={handleSubmitFile}
               >
                 Update
               </Button>
