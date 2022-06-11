@@ -152,7 +152,7 @@ const EntryDetails = () => {
             </div>
           </div>
         </div>
-        {admin.user.role === "coordination team" ? (
+        {admin.user.role === "COORDINATION TEAM" ? (
           <Grid lg={12} md={12} sm={12} xs={12} container marginBottom={2} spacing={2}>
             <Grid lg={12} md={12} sm={12} xs={12} item>
               <div className="flex flex-col lg:w-2/5 md:w-2/4 sm:w-full w-full justify-start">
@@ -213,7 +213,7 @@ const EntryDetails = () => {
         )}
         <div className="w-full flex justify-end">
           <div className="flex">
-            {admin.user.role === "coordination team" ? (
+            {admin.user.role === "COORDINATION TEAM" ? (
               <Button
                 variant="contained"
                 type="submit"

@@ -26,7 +26,7 @@ const FormikDropdown = ({
         helperText={helperText}
       >
         {data && data.map((r) => {
-          return <MenuItem value={r.value}>{r.value}</MenuItem>;
+          return <MenuItem key={r.value} value={r.value}>{r.value}</MenuItem>;
         })}
       </Select>
     </div>

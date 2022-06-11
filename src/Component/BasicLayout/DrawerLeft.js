@@ -79,12 +79,14 @@ const DrawerLeft = ({
               </div>
             </div>
             <List sx={{ alignSelf: "center", width: "100%" }}>
-              {(admin.user && admin.user.role === "admin"
+              {(admin.user && admin.user.role === "ADMIN"
                 ? adminData
-                : admin.user.role === "entry team"
+                : admin.user.role === "ENTRY TEAM"
                 ? EntryData
-                : admin.user.role === "coordination team"
+                : admin.user.role === "COORDINATION TEAM"
                 ? CoordinationData
+                : admin.user.role === "COORDINATION TEAM MANAGER"
+                ? CoordinationManagerData
                 : ""
               ).map((item) => {
                 return (
@@ -163,6 +165,19 @@ const CoordinationData = [
     text: "Cordination Team",
     icon: DashboardOutlinedIcon,
     click: "/coordination",
+  },
+];
+
+const CoordinationManagerData = [
+  {
+    text: "Dashboard",
+    icon: DashboardOutlinedIcon,
+    click: "/dashboard",
+  },
+  {
+    text: "Assign Task",
+    icon: DashboardOutlinedIcon,
+    click: "/assign-task",
   },
 ];
 

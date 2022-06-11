@@ -105,8 +105,7 @@ export const {
 } = actions;
 export default EntrySlice.reducer;
 
-export const GetEntryFunction = (id) => {
-  console.log(id, "id");
+export const GetEntryFunction = () => {
   return async (dispatch) => {
     try {
       dispatch(GetEntryPending());

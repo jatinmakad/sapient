@@ -17,7 +17,8 @@ const User = () => {
   useEffect(() => {
     if (searchInput) {
       dispatch(GetUserFunctionSearch(searchInput));
-    } else {
+    }
+    if (searchInput === "") {
       dispatch(GetUserFunction());
     }
     if (isAuth === false) {
@@ -28,7 +29,7 @@ const User = () => {
   return isAuth ? (
     <BasicLayout heading="User Management">
       <TableHeaderLayout setSearchInput={setSearchInput}>
-        {admin.user.role === "admin" ? (
+        {admin.user.role === "ADMIN" ? (
           <Grid
             item
             lg={3}

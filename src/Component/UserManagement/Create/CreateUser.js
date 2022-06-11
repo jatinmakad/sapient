@@ -35,7 +35,7 @@ const CreateUser = () => {
     email: "",
     password: "",
     contactNumber: "",
-    role: "broker",
+    role: "Broker",
   };
   const onSubmit = (values) => {
     console.log(values);
@@ -141,13 +141,16 @@ const CreateUser = () => {
 export default CreateUser;
 
 const roleData = [
-  { value: "admin" },
-  { value: "insuer" },
-  { value: "insurence company" },
-  { value: "broker" },
-  { value: "entry team" },
-  { value: "report team" },
-  { value: "coordination team" },
-  { value: "checking team" },
-  { value: "account team" },
+  { value: "ADMIN", label: "Admin" },
+  { value: "INSUER", label: "Insuer" },
+  { value: "INSURENCE COMPANY", label: "Insurence Company" },
+  { value: "BROKER", label: "Broker" },
+  { value: "ENTRY TEAM", label: "Entry Team" },
+  { value: "REPORT TEAM", label: "Report Team" },
+  { value: "COORDINATION TEAM", label: "Coordination Team" },
+  { value: "ACCOUNT TEAM", label: "Account Team" },
+  { value: "ENTRY TEAM MANAGER", label: "Entry Team Manager" },
+  { value: "REPORT TEAM MANAGER", label: "Report Team Manager" },
+  { value: "COORDINATION TEAM MANAGER", label: "Coordination Team Manager" },
+  { value: "ACCOUNT TEAM MANAGER", label: "Account Team Manager" },
 ];

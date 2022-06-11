@@ -13,6 +13,7 @@ import EntryDetails from "../Component/Entry/EntryDetails";
 import YourWork from "../Component/Entry/YourWork/YourWork";
 import Coordination from "../Component/Coordination/Coordination";
 import Cookie from "universal-cookie";
+import AssignTask from "../Component/CoordinationManager/AssignTask/AssignTask";
 const RoutesPage = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -41,6 +42,7 @@ const RoutesPage = () => {
         <Route path={"/create-user"} element={<CreateUser />} />
         /* Coordination */
         <Route path={"/coordination"} element={<Coordination />} />
+        <Route path={"/assign-task"} element={<AssignTask />} />
       </Routes>
     </BrowserRouter>
   );
