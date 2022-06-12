@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   GetEntryFunctionId,
   UpdateEntryStatusFunction2,
+  UpdateEntryStatusFunction3,
 } from "../../Slice/EntrySlice";
 import { Link, useNavigate } from "react-router-dom";
 import Table from "@mui/material/Table";
@@ -24,7 +25,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import moment from "moment";
-const CoordinationTable = () => {
+const ReportTable = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuth, admin } = useSelector((state) => state.Login);
@@ -107,8 +108,8 @@ const CoordinationTable = () => {
                   </StyledTableCell>
                   <StyledTableCell align="left">
                     <div className="flex justify-start items-left">
-                      {row.currentJobHoldingTeam !== "COORDINATION TEAM" ? (
-                        "DONE BY COORDINATION TEAM"
+                      {row.currentJobHoldingTeam !== "REPORT TEAM" ? (
+                        "DONE BY REPORT TEAM"
                       ) : (
                         <>
                           <Link to={`/update-coordination/${row.uniqueJobId}`}>
@@ -143,7 +144,7 @@ const CoordinationTable = () => {
   );
 };
 
-export default CoordinationTable;
+export default ReportTable;
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -193,7 +194,7 @@ const AssignDialogBox = ({ open, handleClose, selectData, dispatch }) => {
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [demo, setDemo] = React.useState("");
   const onSubmit = () => {
-    dispatch(UpdateEntryStatusFunction2(selectData, demo));
+    dispatch(UpdateEntryStatusFunction3(selectData, demo));
   };
   return (
     <Dialog
