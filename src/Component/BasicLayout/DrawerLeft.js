@@ -73,17 +73,17 @@ const DrawerLeft = ({
                 <p className="text-md text-black">
                   {admin.user && admin.user.name}
                 </p>
-                <span className="text-sm text-gray-400">
+                <p className="text-xs text-gray-400 break-words capitalize whitespace-normal">
                   {admin.user && admin.user.role}
-                </span>
+                </p>
               </div>
             </div>
             <List sx={{ alignSelf: "center", width: "100%" }}>
               {(admin.user && admin.user.role === "ADMIN"
                 ? adminData
-                : admin.user.role === "ENTRY TEAM"
+                : admin.user.role === "ENTRY TEAM EMPLOYEE"
                 ? EntryData
-                : admin.user.role === "COORDINATION TEAM"
+                : admin.user.role === "COORDINATION TEAM EMPLOYEE"
                 ? CoordinationData
                 : admin.user.role === "COORDINATION TEAM MANAGER"
                 ? CoordinationManagerData

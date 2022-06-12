@@ -23,7 +23,7 @@ const Entry = () => {
   return ( isAuth ? 
     <BasicLayout heading="Entry">
      <TableHeaderLayout setSearchInput={setSearchInput}>
-        {admin.user.role === "ENTRY TEAM" ? <Grid
+        {admin.user.role === "ENTRY TEAM EMPLOYEE" ? <Grid
           item
           lg={3}
           md={3}

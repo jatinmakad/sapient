@@ -65,11 +65,12 @@ const YourWork = () => {
   const deleteAction = (id) => {
     dispatch(DeletEntryFunction(id));
   };
-  const changeValue = (id, e) => {
-    dispatch(UpdateEntryStatusFunction(id, e.target.value));
+  const changeValue = (row, e) => {
+    dispatch(UpdateEntryStatusFunction(row, e.target.value));
   };
   const [searchInput, setSearchInput] = React.useState("");
   console.log(entry.data);
+
   return isAuth ? (
     <BasicLayout heading="Your Work">
       <TableHeaderLayout setSearchInput={setSearchInput} />
@@ -123,9 +124,9 @@ const YourWork = () => {
                         fullWidth
                         size="small"
                         onChange={(e) =>
-                          changeValue(row.uniqueJobId, e)
+                          changeValue(row,e)
                         }
-                        value={row.jobStatus}
+                        value={row.currentJobStatus}
                       >
                         {data &&
                           data.map((r) => {

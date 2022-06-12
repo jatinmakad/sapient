@@ -1,4 +1,4 @@
-import { Grid, Button } from "@mui/material";
+import { Grid, Button, Select, MenuItem } from "@mui/material";
 import React, { useRef, useEffect } from "react";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
@@ -35,11 +35,28 @@ const CreateUser = () => {
     email: "",
     password: "",
     contactNumber: "",
-    role: "Broker",
+    role: "BROKER",
   };
   const onSubmit = (values) => {
-    console.log(values);
-    dispatch(RegisterFunction(values));
+    let data;
+   if( values.role === "ENTRY TEAM EMPLOYEE"){
+    data = "ENTRY TEAM"
+   } else if(values.role === "REPORT TEAM EMPLOYEE"){
+    data = "REPORT TEAM"
+   } else if (values.role === "COORDINATION TEAM EMPLOYEE") {
+    data = "COORDINATION TEAM"
+   } else if(values.role === "ACCOUNT TEAM EMPLOYEE") {
+    data = "ACCOUNT TEAM"
+   } else if (values.role === "ENTRY TEAM MANAGER"){
+    data = "ENTRY TEAM"
+   } else if(values.role === "REPORT TEAM MANAGER"){
+    data = "REPORT TEAM"
+   } else if( values.role === "COORDINATION TEAM MANAGER"){
+    data = "COORDINATION TEAM"
+   } else if(values.role === "ACCOUNT TEAM MANAGER"){
+    data = "ACCOUNT TEAM"
+   }
+    dispatch(RegisterFunction({ ...values, team: data }));
   };
   return (
     <BasicLayout heading="Create User">
@@ -145,12 +162,36 @@ const roleData = [
   { value: "INSUER", label: "Insuer" },
   { value: "INSURENCE COMPANY", label: "Insurence Company" },
   { value: "BROKER", label: "Broker" },
-  { value: "ENTRY TEAM", label: "Entry Team" },
-  { value: "REPORT TEAM", label: "Report Team" },
-  { value: "COORDINATION TEAM", label: "Coordination Team" },
-  { value: "ACCOUNT TEAM", label: "Account Team" },
-  { value: "ENTRY TEAM MANAGER", label: "Entry Team Manager" },
-  { value: "REPORT TEAM MANAGER", label: "Report Team Manager" },
-  { value: "COORDINATION TEAM MANAGER", label: "Coordination Team Manager" },
-  { value: "ACCOUNT TEAM MANAGER", label: "Account Team Manager" },
+  { value: "ENTRY TEAM EMPLOYEE", label: "Entry Team", team: "ENTRY TEAM" },
+  { value: "REPORT TEAM EMPLOYEE", label: "Report Team", team: "REPORT TEAM" },
+  {
+    value: "COORDINATION TEAM EMPLOYEE",
+    label: "Coordination Team",
+    team: "COORDINATION TEAM",
+  },
+  {
+    value: "ACCOUNT TEAM EMPLOYEE",
+    label: "Account Team",
+    team: "ACCOUNT TEAM",
+  },
+  {
+    value: "ENTRY TEAM MANAGER",
+    label: "Entry Team Manager",
+    team: "ENTRY TEAM",
+  },
+  {
+    value: "REPORT TEAM MANAGER",
+    label: "Report Team Manager",
+    team: "REPORT TEAM",
+  },
+  {
+    value: "COORDINATION TEAM MANAGER",
+    label: "Coordination Team Manager",
+    team: "COORDINATION TEAM",
+  },
+  {
+    value: "ACCOUNT TEAM MANAGER",
+    label: "Account Team Manager",
+    team: "ACCOUNT TEAM",
+  },
 ];

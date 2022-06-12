@@ -79,6 +79,10 @@ const CreateEntry = () => {
         ...values,
         currentJobHolder: admin.user._id,
         ownerId: admin.user._id,
+        previousJobHoldingTeam: "ENTRY TEAM",
+        currentJobHoldingTeam: "ENTRY TEAM",
+        // currentJobStatus: "OPEN",
+        // previousJobStatus: "OPEN",
       })
     );
   };

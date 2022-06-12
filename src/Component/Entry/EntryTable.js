@@ -92,7 +92,7 @@ export default function EntryTable({ searchInput }) {
                     {/* <StatusColor status={row.status} /> */}
                     {row.insured}
                   </StyledTableCell>
-                  {admin.user.role === "admin" ? (
+                  {admin.user.role === "ADMIN" ? (
                     <StyledTableCell align="left">
                       <div className="flex justify-evenly items-center">
                         <Link to={`/update-entry/${row.reportRefrenceNo}`}>

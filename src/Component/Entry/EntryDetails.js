@@ -152,7 +152,7 @@ const EntryDetails = () => {
             </div>
           </div>
         </div>
-        {admin.user.role === "COORDINATION TEAM" ? (
+        {admin.user.role === "COORDINATION TEAM EMPLOYEE" ? (
           <Grid lg={12} md={12} sm={12} xs={12} container marginBottom={2} spacing={2}>
             <Grid lg={12} md={12} sm={12} xs={12} item>
               <div className="flex flex-col lg:w-2/5 md:w-2/4 sm:w-full w-full justify-start">
@@ -226,7 +226,7 @@ const EntryDetails = () => {
               ""
             )}
             <Link
-              to={admin.user.role === "entry team" ? "/entry" : "/coordination"}
+              to={admin.user.role === "ENTRY TEAM EMPLOYEE" ? "/entry" : "/coordination"}
             >
               <Button variant="contained" color="error">
                 Close
