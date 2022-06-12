@@ -15,6 +15,8 @@ import Coordination from "../Component/Coordination/Coordination";
 import Cookie from "universal-cookie";
 import AssignTask from "../Component/CoordinationManager/AssignTask/AssignTask";
 import UpdateCoordination from "../Component/Coordination/Update/UpdateCoordination";
+import ReportTeam from "../Component/ReportTeam/reportTeam";
+import AssignTaskReportTeam from "../Component/ReportTeamManager/AssignTaskReportTeam";
 const RoutesPage = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -43,8 +45,22 @@ const RoutesPage = () => {
         <Route path={"/create-user"} element={<CreateUser />} />
         /* Coordination */
         <Route path={"/coordination"} element={<Coordination />} />
-        <Route path={"/update-coordination/:id"} element={<UpdateCoordination />} />
+        <Route
+          path={"/update-coordination/:id"}
+          element={<UpdateCoordination />}
+        />
         <Route path={"/assign-task"} element={<AssignTask />} />
+        /* REPORT */
+        <Route path={"/report-team"} element={<ReportTeam />} />
+        {/* <Route
+          path={"/update-coordination/:id"}
+          element={<UpdateCoordination />}
+        />
+        */}
+        <Route
+          path={"/assign-task-report-team"}
+          element={<AssignTaskReportTeam />}
+        />
       </Routes>
     </BrowserRouter>
   );

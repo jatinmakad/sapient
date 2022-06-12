@@ -87,6 +87,10 @@ const DrawerLeft = ({
                 ? CoordinationData
                 : admin.user.role === "COORDINATION TEAM MANAGER"
                 ? CoordinationManagerData
+                : admin.user.role === "REPORT TEAM MANAGER"
+                ? reportTeamManagerData
+                : admin.user.role === "REPORT TEAM EMPLOYEE"
+                ? reportTeamData
                 : ""
               ).map((item) => {
                 return (
@@ -180,7 +184,30 @@ const CoordinationManagerData = [
     click: "/assign-task",
   },
 ];
-
+const reportTeamManagerData = [
+  {
+    text: "Dashboard",
+    icon: DashboardOutlinedIcon,
+    click: "/dashboard",
+  },
+  {
+    text: "Assign Task",
+    icon: DashboardOutlinedIcon,
+    click: "/assign-task-report-team",
+  },
+];
+const reportTeamData = [
+  {
+    text: "Dashboard",
+    icon: DashboardOutlinedIcon,
+    click: "/dashboard",
+  },
+  {
+    text: "Report Team",
+    icon: DashboardOutlinedIcon,
+    click: "/report-team",
+  },
+];
 const adminData = [
   {
     text: "Dashboard",

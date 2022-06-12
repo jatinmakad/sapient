@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import BasicLayout from "../../BasicLayout/BasicLayout";
+import BasicLayout from "../BasicLayout/BasicLayout";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  GetEntryDoneFunction,
-  GetEntryFunction,
-} from "../../../Slice/EntrySlice";
+import { GetEntryDoneFunction } from "../../Slice/EntrySlice";
 import { useNavigate } from "react-router-dom";
-import TableHeaderLayout from "../../Common/TableLayout/TableHeaderLayout";
+import TableHeaderLayout from "../Common/TableLayout/TableHeaderLayout";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -15,11 +12,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
-import Loader from "../../Common/Loader";
+import Loader from "../Common/Loader";
 import moment from "moment";
 import { MenuItem, Select } from "@mui/material";
-import { GetUserFunction } from "../../../Slice/RegisterSlice";
-import { UpdateAssignFunction } from "../../../Slice/CoordinationSlice";
+import { GetUserFunction } from "../../Slice/RegisterSlice";
+import { UpdateAssignFunction } from "../../Slice/ReportSlice";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -27,15 +24,15 @@ import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import Button from "@mui/material/Button";
-import ToastComponent from "../../Common/TaostComponent";
-const AssignTask = () => {
+import ToastComponent from "../Common/TaostComponent";
+const AssignTaskReportTeam = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuth, admin } = useSelector((state) => state.Login);
   const { data } = useSelector((state) => state.Register.get.users);
   const { entry, isLoading } = useSelector((state) => state.Entry.get);
   const { updateAssignTaskSuccess } = useSelector(
-    (state) => state.Coordination.assignTask
+    (state) => state.Report.assignTask
   );
   const [open, setOpen] = React.useState(false);
   const [selectData, setSelectData] = useState("");
@@ -63,7 +60,7 @@ const AssignTask = () => {
   let updated =
     data &&
     data.filter((r) => {
-      return r.role === "COORDINATION TEAM EMPLOYEE";
+      return r.role === "REPORT TEAM EMPLOYEE";
     });
   return isAuth ? (
     <BasicLayout heading="Assign Task">
@@ -144,7 +141,7 @@ const AssignTask = () => {
   );
 };
 
-export default AssignTask;
+export default AssignTaskReportTeam;
 
 const AssignDialogBox = ({
   open,

@@ -54,10 +54,9 @@ const YourWork = () => {
     }
     if (updateStatusSuccess) {
       dispatch(GetEntryFunctionId(admin.user._id));
-      setOpen2(false)
+      setOpen2(false);
     }
   }, [isAuth, deleteSuccess, updateStatusSuccess]);
-
 
   const [id, setId] = React.useState("");
   const [selectData, setSelectData] = React.useState("");
@@ -152,21 +151,30 @@ const YourWork = () => {
                           })}
                       </Select> */}
                     </StyledTableCell>
+
                     <StyledTableCell align="left">
                       <div className="flex justify-evenly items-center">
-                        <Link to={`/update-entry/${row.uniqueJobId}`}>
-                          <EditIcon className="text-blue-700 cursor-pointer" />
-                        </Link>
-                        <DeleteIcon
-                          className="text-red-700 cursor-pointer"
-                          onClick={() => handleClickDeleteOpen(row.uniqueJobId)}
-                        />
-                        <p
-                          onClick={() => handleClickOpen2(row)}
-                          className="text-blue-600 cursor-pointer"
-                        >
-                          Update Status
-                        </p>
+                        {row.currentJobHoldingTeam !== "ENTRY TEAM" ? (
+                          "DONE BY ENTRY TEAM"
+                        ) : (
+                          <>
+                            <Link to={`/update-entry/${row.uniqueJobId}`}>
+                              <EditIcon className="text-blue-700 cursor-pointer" />
+                            </Link>
+                            <DeleteIcon
+                              className="text-red-700 cursor-pointer"
+                              onClick={() =>
+                                handleClickDeleteOpen(row.uniqueJobId)
+                              }
+                            />
+                            <p
+                              onClick={() => handleClickOpen2(row)}
+                              className="text-blue-600 cursor-pointer"
+                            >
+                              Update Status
+                            </p>
+                          </>
+                        )}
                       </div>
                     </StyledTableCell>
                   </TableRow>

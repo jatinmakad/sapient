@@ -17,7 +17,7 @@ const initialState = {
   },
   update: {
     updateSuccess: false,
-    docmentUplaod:false
+    docmentUplaod: false,
   },
   updateStatus: {
     updateStatusSuccess: false,
@@ -109,7 +109,8 @@ export const {
   UpdateEntryStatusBefore,
   UpdateEntryStatus,
   UpdateEntryStatusCleanup,
-  UpdateDocument,UpdateDocumentAfter
+  UpdateDocument,
+  UpdateDocumentAfter,
 } = actions;
 export default EntrySlice.reducer;
 const config = { headers: { "Content-Type": "application/json" } };
@@ -235,19 +236,16 @@ export const uploadDocuments = (Data) => {
         Data,
         config
       );
-      console.log(data,"Data")
       if (data.data.success === true) {
-        dispatch(UpdateDocument())
+        dispatch(UpdateDocument());
         ToastComponent("Data Updated SuccessFully", "success");
       }
-      dispatch(UpdateDocumentAfter())
+      dispatch(UpdateDocumentAfter());
     } catch (err) {
       ToastComponent("Something went wrong!");
     }
-  }
- 
+  };
 };
-
 
 export const UpdateEntryStatusFunction2 = (row, currentStatus) => {
   let currentJobHolding;
@@ -255,6 +253,27 @@ export const UpdateEntryStatusFunction2 = (row, currentStatus) => {
     currentJobHolding = "REPORT TEAM";
   } else {
     currentJobHolding = "COORDINATION TEAM";
+  }
+  return async (dispatch) => {
+    const config = { headers: { "Content-Type": "application/json" } };
+    dispatch(UpdateEntryStatusBefore());
+    const { data } = await axios.post(
+      `https://sap-data-management-mcs.herokuapp.com/update-task-status?uniqueJobId=${row.uniqueJobId}&previousJobHoldingTeam=${row.currentJobHoldingTeam}&currentJobHoldingTeam=${currentJobHolding}&currentJobStatus=${currentStatus}&previousJobStatus=${row.previousJobStatus}`,
+      config
+    );
+    if (data.success === true) {
+      dispatch(UpdateEntryStatus());
+      ToastComponent("Entry Status Updated SuccessFully", "success");
+    }
+    dispatch(UpdateEntryStatusCleanup());
+  };
+};
+export const UpdateEntryStatusFunction3 = (row, currentStatus) => {
+  let currentJobHolding;
+  if (currentStatus === "OPEN-FOR-NEXT-TEAM") {
+    currentJobHolding = "ACCOUNT TEAM";
+  } else {
+    currentJobHolding = "REPORT TEAM";
   }
   return async (dispatch) => {
     const config = { headers: { "Content-Type": "application/json" } };
