@@ -66,12 +66,12 @@ export default function UserTable({ searchInput }) {
                     {/* <StatusColor status={row.status} /> */}
                     {row.contactNumber}
                   </StyledTableCell>
-                  <StyledTableCell align="left">
+                  {/* <StyledTableCell align="left">
                     <div className="flex justify-evenly items-center">
                       <EditIcon className="text-blue-700 cursor-pointer" />
                       <DeleteIcon className="text-red-700 cursor-pointer" />
                     </div>
-                  </StyledTableCell>
+                  </StyledTableCell> */}
                 </TableRow>
               ))}
           </TableBody>
@@ -123,8 +123,8 @@ const headerCell = [
     value: "Contact Number",
     align: "left",
   },
-  {
-    value: "Action",
-    align: "center",
-  },
+  // {
+  //   value: "Action",
+  //   align: "center",
+  // },
 ];

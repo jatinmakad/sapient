@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import BasicLayout from "../../BasicLayout/BasicLayout";
 import { useDispatch, useSelector } from "react-redux";
-import { GetEntryDoneFunction, GetEntryFunction } from "../../../Slice/EntrySlice";
+import {
+  GetEntryDoneFunction,
+  GetEntryFunction,
+} from "../../../Slice/EntrySlice";
 import { useNavigate } from "react-router-dom";
 import TableHeaderLayout from "../../Common/TableLayout/TableHeaderLayout";
 import Table from "@mui/material/Table";
@@ -38,7 +41,7 @@ const AssignTask = () => {
   const [selectData, setSelectData] = useState("");
   useEffect(() => {
     if (isAuth) {
-      dispatch(GetEntryFunction());
+      dispatch(GetEntryDoneFunction(admin.user.team));
       dispatch(GetUserFunction());
     }
     if (isAuth === false) {
@@ -60,21 +63,16 @@ const AssignTask = () => {
   let updated =
     data &&
     data.filter((r) => {
-      return r.role === "COORDINATION TEAM";
+      return r.role === "COORDINATION TEAM EMPLOYEE";
     });
-
-    let updatedEntry =
-    entry.data &&
-    entry.data.filter((r) => {
-      return r.currentJobStatus === "DONE";
-    });
+  console.log(entry.data);
   return isAuth ? (
     <BasicLayout heading="Assign Task">
       <TableHeaderLayout setSearchInput={setSearchInput} />
       <TableContainer component={Paper}>
         {isLoading ? (
           <Loader />
-        ) : updatedEntry && !updatedEntry.length ? (
+        ) : entry.data && !entry.data.length ? (
           <p className="w-full flex justify-center items-center font-semibold text-3xl pt-3 pb-3">
             No Record Found
           </p>
@@ -98,9 +96,9 @@ const AssignTask = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {updatedEntry &&
-                updatedEntry.length >= 1 &&
-                updatedEntry.map((row, index) => (
+              {entry.data &&
+                entry.data.length >= 1 &&
+                entry.data.map((row, index) => (
                   <TableRow sx={{ border: "none" }}>
                     <StyledTableCell component="th" scope="row">
                       {index + 1}
@@ -115,14 +113,18 @@ const AssignTask = () => {
                     <StyledTableCell align="left">
                       {row.insured}
                     </StyledTableCell>
-                    <StyledTableCell
-                      align="left"
-                      onClick={() => handleClickOpen(row)}
-                    >
-                      <p className="text-blue-600 flex justify-center w-full cursor-pointer">
-                        Assign Here
-                      </p>
-                    </StyledTableCell>
+                    {row.isTaskAssigned ? (
+                      <StyledTableCell align="center">Assigned</StyledTableCell>
+                    ) : (
+                      <StyledTableCell
+                        align="center"
+                        onClick={() => handleClickOpen(row)}
+                      >
+                        <p className="text-blue-600 flex justify-center w-full cursor-pointer">
+                          Assign Here
+                        </p>
+                      </StyledTableCell>
+                    )}
                   </TableRow>
                 ))}
             </TableBody>
@@ -161,6 +163,7 @@ const AssignDialogBox = ({
       userId: admin.user._id,
       uniqueJobId: data.uniqueJobId,
       currentJobHolder: demo._id,
+      isTaskAssigned: true,
     };
     if (demo._id) {
       dispatch(UpdateAssignFunction(taskData));

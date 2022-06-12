@@ -3,7 +3,6 @@ import BasicLayout from "../../BasicLayout/BasicLayout";
 import { useDispatch, useSelector } from "react-redux";
 import {
   DeletEntryFunction,
-  GetEntryFunction,
   GetEntryFunctionId,
   UpdateEntryStatusFunction,
 } from "../../../Slice/EntrySlice";
@@ -22,8 +21,15 @@ import { styled } from "@mui/material/styles";
 import Loader from "../../Common/Loader";
 import moment from "moment";
 import DeleteDialog from "../../Common/DeleteDialog";
-import { setNestedObjectValues } from "formik";
 import { MenuItem, Select } from "@mui/material";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import Button from "@mui/material/Button";
+import ToastComponent from "../../Common/TaostComponent";
 const YourWork = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -33,7 +39,8 @@ const YourWork = () => {
   const { updateStatusSuccess } = useSelector(
     (state) => state.Entry.updateStatus
   );
-  const [value, setValue] = React.useState("");
+  const [open, setOpen] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
   useEffect(() => {
     if (isAuth) {
       dispatch(GetEntryFunctionId(admin.user._id));
@@ -47,16 +54,25 @@ const YourWork = () => {
     }
     if (updateStatusSuccess) {
       dispatch(GetEntryFunctionId(admin.user._id));
+      setOpen2(false)
     }
   }, [isAuth, deleteSuccess, updateStatusSuccess]);
 
-  const [open, setOpen] = React.useState(false);
+
   const [id, setId] = React.useState("");
+  const [selectData, setSelectData] = React.useState("");
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+  };
+  const handleClickOpen2 = (row) => {
+    setOpen2(true);
+    setSelectData(row);
+  };
+  const handleClose2 = () => {
+    setOpen2(false);
   };
   const handleClickDeleteOpen = (id) => {
     setOpen(true);
@@ -65,11 +81,10 @@ const YourWork = () => {
   const deleteAction = (id) => {
     dispatch(DeletEntryFunction(id));
   };
-  const changeValue = (row, e) => {
-    dispatch(UpdateEntryStatusFunction(row, e.target.value));
-  };
+  // const changeValue = (row, e) => {
+  //   dispatch(UpdateEntryStatusFunction(row, e.target.value));
+  // };
   const [searchInput, setSearchInput] = React.useState("");
-  console.log(entry.data);
 
   return isAuth ? (
     <BasicLayout heading="Your Work">
@@ -120,7 +135,8 @@ const YourWork = () => {
                       {row.insured}
                     </StyledTableCell>
                     <StyledTableCell align="left">
-                      <Select
+                      {row.currentJobStatus}
+                      {/* <Select
                         fullWidth
                         size="small"
                         onChange={(e) =>
@@ -134,7 +150,7 @@ const YourWork = () => {
                               <MenuItem value={r.value}>{r.value}</MenuItem>
                             );
                           })}
-                      </Select>
+                      </Select> */}
                     </StyledTableCell>
                     <StyledTableCell align="left">
                       <div className="flex justify-evenly items-center">
@@ -145,6 +161,12 @@ const YourWork = () => {
                           className="text-red-700 cursor-pointer"
                           onClick={() => handleClickDeleteOpen(row.uniqueJobId)}
                         />
+                        <p
+                          onClick={() => handleClickOpen2(row)}
+                          className="text-blue-600 cursor-pointer"
+                        >
+                          Update Status
+                        </p>
                       </div>
                     </StyledTableCell>
                   </TableRow>
@@ -156,6 +178,13 @@ const YourWork = () => {
               deleteAction={deleteAction}
               handleClickOpen={handleClickOpen}
               id={id}
+            />
+            <AssignDialogBox
+              open={open2}
+              admin={admin}
+              handleClose={handleClose2}
+              dispatch={dispatch}
+              selectData={selectData}
             />
           </Table>
         )}
@@ -180,15 +209,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
 const headerCell = [
   {
     value: "Sr no.",
@@ -212,7 +232,7 @@ const headerCell = [
   },
   {
     value: "Status",
-    align: "center",
+    align: "left",
   },
   {
     value: "Action",
@@ -220,12 +240,54 @@ const headerCell = [
   },
 ];
 
+const AssignDialogBox = ({ open, handleClose, selectData, dispatch }) => {
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const [demo, setDemo] = React.useState("");
+  const onSubmit = () => {
+    dispatch(UpdateEntryStatusFunction(selectData, demo));
+  };
+
+  return (
+    <Dialog
+      fullScreen={fullScreen}
+      open={open}
+      fullWidth
+      size={"lg"}
+      onClose={handleClose}
+      aria-labelledby="responsive-dialog-title"
+    >
+      <DialogTitle id="responsive-dialog-title">Select Job Status</DialogTitle>
+      <DialogContent>
+        <Select
+          fullWidth
+          size="small"
+          onChange={(e) => setDemo(e.target.value)}
+        >
+          {data &&
+            data.map((r) => {
+              return <MenuItem value={r.value}>{r.value}</MenuItem>;
+            })}
+        </Select>
+      </DialogContent>
+      <DialogActions>
+        <Button variant="contained" onClick={onSubmit} color="info">
+          Submit
+        </Button>
+        <Button variant="contained" onClick={handleClose} color="error">
+          Cancel
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
 const data = [
   {
     value: "OPEN",
   },
   {
-    value: "DONE",
+    value: "OPEN-FOR-NEXT-TEAM",
   },
   {
     value: "IN-PROGRESS",

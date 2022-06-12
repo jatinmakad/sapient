@@ -17,6 +17,7 @@ const initialState = {
   },
   update: {
     updateSuccess: false,
+    docmentUplaod:false
   },
   updateStatus: {
     updateStatusSuccess: false,
@@ -82,6 +83,12 @@ const EntrySlice = createSlice({
     UpdateEntryStatusCleanup: (state) => {
       state.updateStatus.updateStatusSuccess = false;
     },
+    UpdateDocument: (state) => {
+      state.update.docmentUplaod = true;
+    },
+    UpdateDocumentAfter: (state) => {
+      state.update.docmentUplaod = false;
+    },
   },
 });
 
@@ -102,6 +109,7 @@ export const {
   UpdateEntryStatusBefore,
   UpdateEntryStatus,
   UpdateEntryStatusCleanup,
+  UpdateDocument,UpdateDocumentAfter
 } = actions;
 export default EntrySlice.reducer;
 const config = { headers: { "Content-Type": "application/json" } };
@@ -118,11 +126,11 @@ export const GetEntryFunction = () => {
     }
   };
 };
-export const GetEntryDoneFunction = () => {
+export const GetEntryDoneFunction = (current) => {
   return async (dispatch) => {
     try {
       dispatch(GetEntryPending());
-      let link = `https://sap-data-management-mcs.herokuapp.com/GET-DONE-JOBS`;
+      let link = `https://sap-data-management-mcs.herokuapp.com/get-job-lists?currentJobHoldingTeam=${current}`;
       const { data } = await axios.get(link);
       dispatch(GetEntrySuccess(data));
     } catch (error) {
@@ -199,12 +207,17 @@ export const UpdateEntryFunction = (id, Data) => {
 };
 
 export const UpdateEntryStatusFunction = (row, currentStatus) => {
-  console.log(row,"row")
+  let currentJobHolding;
+  if (currentStatus === "OPEN-FOR-NEXT-TEAM") {
+    currentJobHolding = "COORDINATION TEAM";
+  } else {
+    currentJobHolding = "ENTRY TEAM";
+  }
   return async (dispatch) => {
     const config = { headers: { "Content-Type": "application/json" } };
     dispatch(UpdateEntryStatusBefore());
     const { data } = await axios.post(
-      `https://sap-data-management-mcs.herokuapp.com/update-task-status?uniqueJobId=${row.uniqueJobId}&previousJobHoldingTeam=${row.previousJobHoldingTeam}&currentJobHoldingTeam=${row.currentJobHoldingTeam}&currentJobStatus=${currentStatus}&previousJobStatus=${row.previousJobStatus}`,
+      `https://sap-data-management-mcs.herokuapp.com/update-task-status?uniqueJobId=${row.uniqueJobId}&previousJobHoldingTeam=${row.previousJobHoldingTeam}&currentJobHoldingTeam=${currentJobHolding}&currentJobStatus=${currentStatus}&previousJobStatus=${row.previousJobStatus}`,
       config
     );
     if (data.success === true) {
@@ -214,17 +227,46 @@ export const UpdateEntryStatusFunction = (row, currentStatus) => {
     dispatch(UpdateEntryStatusCleanup());
   };
 };
-export const uploadDocuments = async (base64EncodedImage, id) => {
-  try {
-    const data = await axios.put(
-      "https://sap-data-management-mcs.herokuapp.com/upload-documents",
-      { data: base64EncodedImage, uniqueJobId: id },
+export const uploadDocuments = (Data) => {
+  return async (dispatch) => {
+    try {
+      const data = await axios.put(
+        "https://sap-data-management-mcs.herokuapp.com/upload-documents",
+        Data,
+        config
+      );
+      console.log(data,"Data")
+      if (data.data.success === true) {
+        dispatch(UpdateDocument())
+        ToastComponent("Data Updated SuccessFully", "success");
+      }
+      dispatch(UpdateDocumentAfter())
+    } catch (err) {
+      ToastComponent("Something went wrong!");
+    }
+  }
+ 
+};
+
+
+export const UpdateEntryStatusFunction2 = (row, currentStatus) => {
+  let currentJobHolding;
+  if (currentStatus === "OPEN-FOR-NEXT-TEAM") {
+    currentJobHolding = "REPORT TEAM";
+  } else {
+    currentJobHolding = "COORDINATION TEAM";
+  }
+  return async (dispatch) => {
+    const config = { headers: { "Content-Type": "application/json" } };
+    dispatch(UpdateEntryStatusBefore());
+    const { data } = await axios.post(
+      `https://sap-data-management-mcs.herokuapp.com/update-task-status?uniqueJobId=${row.uniqueJobId}&previousJobHoldingTeam=${row.currentJobHoldingTeam}&currentJobHoldingTeam=${currentJobHolding}&currentJobStatus=${currentStatus}&previousJobStatus=${row.previousJobStatus}`,
       config
     );
-    if (data.data.success === true) {
-      ToastComponent("Data Updated SuccessFully", "success");
+    if (data.success === true) {
+      dispatch(UpdateEntryStatus());
+      ToastComponent("Entry Status Updated SuccessFully", "success");
     }
-  } catch (err) {
-    ToastComponent("Something went wrong!");
-  }
+    dispatch(UpdateEntryStatusCleanup());
+  };
 };

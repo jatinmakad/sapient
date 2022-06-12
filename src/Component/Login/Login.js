@@ -83,7 +83,7 @@ const Login = () => {
             </div>
             <div className="mb-5">
               <p className="mb-2 text-sm " style={{ color: "#9FA2B4" }}>
-                PASSWROD
+                PASSWORD
               </p>
               <OutlinedInput
                 id="outlined-adornment-password"
