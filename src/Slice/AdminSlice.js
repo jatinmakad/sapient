@@ -60,20 +60,23 @@ export const LoginFunction = (Data) => {
       );
       if (data.success === true) {
         cookies.set("auth", JSON.stringify(data), { path: "/" });
-        const verify = await axios.get(`https://sap-user-microservice.herokuapp.com/verify-user`, {
-          headers: {
-            Authorization: `Bearer ${data.token}`,
-          },
-        });
+        const verify = await axios.get(
+          `https://sap-user-microservice.herokuapp.com/verify-user`,
+          {
+            headers: {
+              Authorization: `Bearer ${data.token}`,
+            },
+          }
+        );
         if (verify.data.responseCode === 200) {
           dispatch(loginSuccess(data));
           ToastComponent("Login Successfully", "success");
         } else {
-          ToastComponent("Somthing went wrong", "error");
+          ToastComponent("Something went wrong", "error");
         }
       }
     } catch (error) {
-      ToastComponent("Somthing went wrong", "error");
+      ToastComponent("Something went wrong", "error");
       dispatch(loginFail(error));
     }
   };

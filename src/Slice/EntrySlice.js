@@ -104,7 +104,7 @@ export const {
   UpdateEntryStatusCleanup,
 } = actions;
 export default EntrySlice.reducer;
-
+const config = { headers: { "Content-Type": "application/json" } };
 export const GetEntryFunction = () => {
   return async (dispatch) => {
     try {
@@ -213,4 +213,18 @@ export const UpdateEntryStatusFunction = (row, currentStatus) => {
     }
     dispatch(UpdateEntryStatusCleanup());
   };
+};
+export const uploadDocuments = async (base64EncodedImage, id) => {
+  try {
+    const data = await axios.put(
+      "https://sap-data-management-mcs.herokuapp.com/upload-documents",
+      { data: base64EncodedImage, uniqueJobId: id },
+      config
+    );
+    if (data.data.success === true) {
+      ToastComponent("Data Updated SuccessFully", "success");
+    }
+  } catch (err) {
+    ToastComponent("Something went wrong!");
+  }
 };
